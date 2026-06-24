@@ -8,6 +8,67 @@
       "id": "A6a_vgFb030"
     }
   ],
-  "feedback": [],
+  "feedback": [
+    {
+      "userId": "A6a_vgFb030",
+      "username": "Tharnish Palanisamy",
+      "email": "tharnishpalanisamy3@gmail.com",
+      "title": "Laptop",
+      "feedback": "Laptop Screen Not working",
+      "rating": "3",
+      "createdOn": "2026-06-24T11:50:02.945Z",
+      "active": 1,
+      "remarks": "",
+      "id": "djND0BpDrEg"
+    },
+    {
+      "userId": "A6a_vgFb030",
+      "username": "Tharnish Palanisamy",
+      "email": "tharnishpalanisamy3@gmail.com",
+      "title": "w",
+      "feedback": "w",
+      "rating": "5",
+      "createdOn": "2026-06-24T11:51:38.512Z",
+      "active": 1,
+      "remarks": "",
+      "id": "3Zg4z6zNHNc"
+    },
+    {
+      "userId": "A6a_vgFb030",
+      "username": "Tharnish Palanisamy",
+      "email": "tharnishpalanisamy3@gmail.com",
+      "title": "w",
+      "feedback": "w",
+      "rating": "5",
+      "createdOn": "2026-06-24T11:52:38.984Z",
+      "active": 1,
+      "remarks": "",
+      "id": "mD0hajk-RsY"
+    },
+    {
+      "userId": "A6a_vgFb030",
+      "username": "Tharnish Palanisamy",
+      "email": "tharnishpalanisamy3@gmail.com",
+      "title": "s",
+      "feedback": "s",
+      "rating": "5",
+      "createdOn": "2026-06-24T11:53:04.911Z",
+      "active": 1,
+      "remarks": "",
+      "id": "hadcl5cDP2w"
+    },
+    {
+      "userId": "A6a_vgFb030",
+      "username": "Tharnish Palanisamy",
+      "email": "tharnishpalanisamy3@gmail.com",
+      "title": "ww",
+      "feedback": "w",
+      "rating": "3",
+      "createdOn": "2026-06-24T11:53:48.888Z",
+      "active": 1,
+      "remarks": "",
+      "id": "uP4sGbpivKI"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

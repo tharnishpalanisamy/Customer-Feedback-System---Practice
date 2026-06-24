@@ -1,23 +1,34 @@
-//theme
 
-let theme = document.getElementById('theme') 
-let dark = document.getElementById('dark') 
-let light = document.getElementById('light') 
-theme.addEventListener('click' , function(){
-    dark.classList.toggle('d-none') 
+//if user previously has dark theme
+
+if(localStorage.getItem('theme') == 'dark') {
+    changeTheme()
+}
+
+//change theme 
+function changeTheme() {
+    document.body.classList.toggle('dark')
+
+    dark.classList.toggle('d-none')
     light.classList.toggle('d-none')
-    document.body.classList.toggle('dark')
-})
 
-//desktop theme
-let theme2 = document.getElementById('theme2') 
-let dark2 = document.getElementById('dark2') 
-let light2 = document.getElementById('light2') 
-theme2.addEventListener('click' , function(){
-    dark2.classList.toggle('d-none') 
+    dark2.classList.toggle('d-none')
     light2.classList.toggle('d-none')
-    document.body.classList.toggle('dark')
-})
+
+    localStorage.setItem(
+        'theme',
+        document.body.classList.contains('dark') ? 'dark' : 'light'
+    )
+}
+
+
+theme.addEventListener('click', changeTheme)
+theme2.addEventListener('click', changeTheme)
+
+
+
+
+
 
 
 let login = document.getElementById('login') 
@@ -32,7 +43,7 @@ login.addEventListener('click' , function(){
         document.querySelector('.login-text').classList.remove('d-none') 
         document.querySelector('.login-spinner').classList.add('d-none')
         login.disabled = false 
-    }, 1500);
+    }, 1000);
 })
 
 
@@ -47,5 +58,5 @@ register.addEventListener('click' , function(){
         document.querySelector('.register-text').classList.remove('d-none') 
         document.querySelector('.register-spinner').classList.add('d-none')
         register.disabled = false 
-    }, 1500);
+    }, 1000);
 })

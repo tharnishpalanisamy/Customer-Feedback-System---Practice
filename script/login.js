@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000/users'
+import { USERSAPIAPI } from './api.js';
 
 //login 
 
@@ -16,7 +16,7 @@ loginBtn.addEventListener('click' , async function(){
     let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/  
     let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9!@#$%^&*=-]{8,}$/    
 
-    let userData = await fetch(`${API}?email=${email.value}&password=${password.value}`) 
+    let userData = await fetch(`${USERSAPIAPI}?email=${email.value}&password=${password.value}`) 
     let user = await userData.json() 
 
     if(user.length == 1) {

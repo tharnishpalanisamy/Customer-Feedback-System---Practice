@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000/users'
+import { USERSAPI } from './api.js';
 
 //create account 
 
@@ -20,7 +20,7 @@ async function validate(name , email , password , confirmPassword){
         alert('email format is wrong') ; 
         return false ; 
     }
-    let emailData = await fetch(`${API}?email=${email}`) 
+    let emailData = await fetch(`${USERSAPI}?email=${email}`) 
     let emailCheck = await emailData.json() 
 
     if(emailCheck.length > 0) {
@@ -57,7 +57,7 @@ registerBtn.addEventListener('click' , async function(){
             createdOn:new Date().toISOString() 
         }
 
-        await fetch(API , {
+        await fetch(USERSAPI , {
             method:"POST" , 
             headers:{
                 'Content-type' : 'application/json'
