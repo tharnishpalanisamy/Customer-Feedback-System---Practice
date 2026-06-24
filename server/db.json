@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "name": "Tharnish Palanisamy",
+      "email": "tharnishpalanisamy3@gmail.com",
+      "password": "Tharnish@2005",
+      "createdOn": "2026-06-24T09:34:25.270Z",
+      "id": "A6a_vgFb030"
+    }
+  ],
+  "feedback": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}

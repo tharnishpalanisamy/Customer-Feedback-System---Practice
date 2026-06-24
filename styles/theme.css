@@ -1,0 +1,100 @@
+:root{
+    --bg: #F1F5F9;
+    --surface: #FFFFFF;
+    --surface-hover: #F1F5F9;
+
+    --text: #0F172A;
+    --text-secondary: #64748B;
+
+    --primary: #4F46E5;
+    --primary-hover: #0EA5E9 ;
+
+    --border: #E2E8F0;
+
+    --shadow: rgba(15, 23, 42, 0.08);
+
+    --icon-bg: #E0E7FF;
+    --icon-color: #4F46E5;
+}
+
+.dark{
+    --bg: #0F172A;
+    --surface: #1E293B;
+    --surface-hover: #334155;
+
+    --text: #F8FAFC;
+    --text-secondary: #CBD5E1;
+
+    --primary: #818CF8;
+    --primary-hover: #6366F1;
+
+    --border: #475569;
+
+    --shadow: rgba(0, 0, 0, 0.4);
+
+    --icon-bg: #334155;
+    --icon-color: #FACC15;
+}
+
+.text , .nav-link , .navbar , .navbar-brand{
+    color: var(--text) !important;
+}
+
+.bg{
+    background: var(--bg) !important;
+}
+
+.icon-bg{
+    background: var(--icon-bg) !important; 
+    border-radius: 50% !important; 
+    transition: 0.9s;
+    color: var(--text) !important;
+}
+
+.icon-bg:hover{
+    transform: scale(1.1);
+}
+
+.surface{
+    background: var(--surface) !important;
+}
+
+.nav-item a{
+    font-size: 18px !important;
+}
+
+.active{
+    color: var(--primary-hover) !important;
+}
+.nav-item a:hover{
+    color: var(--primary-hover)  !important;
+    transition: 0.4s;
+}
+
+.card-footer a{
+    text-decoration: none; 
+    color: var(--text); 
+
+}
+
+.card{
+    border: none !important;
+    border-radius: 18px !important;
+    overflow: hidden; 
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.5s;
+    }
+
+.card-footer{
+    border-top: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+}   
+
+.card:hover{
+    transform: translateY(-8px);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.required{
+    color: red;
+}

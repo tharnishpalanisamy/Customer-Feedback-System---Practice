@@ -9,7 +9,7 @@ theme.addEventListener('click' , function(){
     document.body.classList.toggle('dark')
 })
 
-
+//desktop theme
 let theme2 = document.getElementById('theme2') 
 let dark2 = document.getElementById('dark2') 
 let light2 = document.getElementById('light2') 
@@ -23,19 +23,29 @@ theme2.addEventListener('click' , function(){
 let login = document.getElementById('login') 
 
 login.addEventListener('click' , function(){
-    Swal.fire({
-    title: "Success!",
-    html: `
-        <object
-            data="assets/svg/success.svg"
-            type="image/svg+xml"
-            class = 'w-75'>
-        </object>
-        <p>Student added successfully</p>
-    `,
-    showConfirmButton: false,
-    timer: 2000
-});
+    document.querySelector('.login-text').classList.add('d-none') 
+    document.querySelector('.login-spinner').classList.remove('d-none')
+    login.disabled = true 
+
+    setTimeout(() => {
+        window.location.href = 'pages/login.html'
+        document.querySelector('.login-text').classList.remove('d-none') 
+        document.querySelector('.login-spinner').classList.add('d-none')
+        login.disabled = false 
+    }, 1500);
+})
 
 
+let register = document.getElementById('register') 
+register.addEventListener('click' , function(){
+    document.querySelector('.register-text').classList.add('d-none') 
+    document.querySelector('.register-spinner').classList.remove('d-none')
+    register.disabled = true 
+
+    setTimeout(() => {
+        window.location.href = 'pages/register.html'
+        document.querySelector('.register-text').classList.remove('d-none') 
+        document.querySelector('.register-spinner').classList.add('d-none')
+        register.disabled = false 
+    }, 1500);
 })
