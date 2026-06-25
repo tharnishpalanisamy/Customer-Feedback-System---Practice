@@ -53,7 +53,8 @@ registerBtn.addEventListener('click' , async function(){
         let user = {
             name:name.value , 
             email:email.value , 
-            password:password.value , 
+            password:password.value ,
+            role:'user' , 
             createdOn:new Date().toISOString() 
         }
 

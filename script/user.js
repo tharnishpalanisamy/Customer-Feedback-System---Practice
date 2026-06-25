@@ -1,36 +1,6 @@
 import { USERSAPI , FEEDBACKAPI } from './api.js';
 
 
-//theme
-
-//if user previously has dark theme
-
-if(localStorage.getItem('theme') == 'dark') {
-    changeTheme()
-}
-
-//change theme 
-function changeTheme() {
-    document.body.classList.toggle('dark')
-
-    dark.classList.toggle('d-none')
-    light.classList.toggle('d-none')
-
-    dark2.classList.toggle('d-none')
-    light2.classList.toggle('d-none')
-
-    localStorage.setItem(
-        'theme',
-        document.body.classList.contains('dark') ? 'dark' : 'light'
-    )
-}
-
-
-theme.addEventListener('click', changeTheme)
-theme2.addEventListener('click', changeTheme)
-
-
-
 //getting the user 
 let user = JSON.parse(localStorage.getItem('user')) || '' 
 if(!user) {
@@ -60,8 +30,8 @@ async function displayStatistics(){
 
     document.querySelector('.feedbackCount').innerText = totalFeedback 
     document.querySelector('.responseCount').innerText = totalResponse 
-    document.querySelector('.averageRating').innerText = Math.round(totalRating / totalFeedback) 
-    document.querySelector('.responseRate').innerText = Math.round((totalResponse / totalFeedback ) * 100) + ' %'
+    document.querySelector('.averageRating').innerText = Math.round(totalRating / totalFeedback) || 0 
+    document.querySelector('.responseRate').innerText = Math.round((totalResponse / totalFeedback ) * 100) + ' %' || 0 
 }
 
 displayStatistics()

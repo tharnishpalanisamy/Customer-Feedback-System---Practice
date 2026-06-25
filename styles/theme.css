@@ -45,10 +45,19 @@
 }
 
 .icon-bg{
-    background: var(--icon-bg) !important; 
-    border-radius: 50% !important; 
-    transition: 0.9s;
-    color: var(--icon-color) !important;
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--icon-bg);
+    color: var(--icon-color);
+
+    border-radius: 50%;
+    transition: .3s;
+    flex-shrink: 0;
 }
 
 .icon-bg:hover{
@@ -98,6 +107,9 @@
 
 .required{
     color: red;
+}
+.red{
+    color: #dc3545  !important;
 }
 
 .primary{

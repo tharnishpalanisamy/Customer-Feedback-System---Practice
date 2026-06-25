@@ -4,83 +4,11 @@
       "name": "Tharnish Palanisamy",
       "email": "tharnishpalanisamy3@gmail.com",
       "password": "Tharnish@2005",
-      "createdOn": "2026-06-24T09:34:25.270Z",
-      "id": "A6a_vgFb030"
+      "role": "admin",
+      "createdOn": "2026-06-25T09:58:18.251Z",
+      "id": "yPXBVewu6f0"
     }
   ],
-  "feedback": [
-    {
-      "userId": "A6a_vgFb030",
-      "username": "Tharnish Palanisamy",
-      "email": "tharnishpalanisamy3@gmail.com",
-      "title": "Tharnish",
-      "department": "HealthCare",
-      "feedback": "Tharnish P",
-      "rating": "3",
-      "createdOn": "2026-06-25T04:40:15.395Z",
-      "active": 1,
-      "remarks": "- ",
-      "status": "Pending",
-      "id": "f60ZNeqmKUs",
-      "updatedOn": "2026-06-25T07:07:33.826Z"
-    },
-    {
-      "userId": "A6a_vgFb030",
-      "username": "Tharnish Palanisamy",
-      "email": "tharnishpalanisamy3@gmail.com",
-      "title": "hi",
-      "department": "HealthCare",
-      "feedback": "This is checking",
-      "rating": "5",
-      "createdOn": "2026-06-25T05:07:36.756Z",
-      "active": 1,
-      "remarks": "-",
-      "status": "Responded",
-      "id": "7adh0fgbEJY"
-    },
-    {
-      "userId": "A6a_vgFb030",
-      "username": "Tharnish Palanisamy",
-      "email": "tharnishpalanisamy3@gmail.com",
-      "title": "Road",
-      "department": "Infrastructure",
-      "feedback": "Road is Poor and damaged , many potholes",
-      "rating": "1",
-      "createdOn": "2026-06-25T06:33:08.714Z",
-      "active": 1,
-      "remarks": "-",
-      "status": "Pending",
-      "id": "vgZPsUmdxIA",
-      "updatedOn": "2026-06-25T07:08:01.707Z"
-    },
-    {
-      "userId": "A6a_vgFb030",
-      "username": "Tharnish Palanisamy",
-      "email": "tharnishpalanisamy3@gmail.com",
-      "title": "4th",
-      "department": "Administration",
-      "feedback": "Need to have documents ",
-      "rating": "2",
-      "createdOn": "2026-06-25T07:21:24.666Z",
-      "active": 1,
-      "remarks": "-",
-      "status": "Pending",
-      "id": "ItKpfm9WCdA"
-    },
-    {
-      "userId": "A6a_vgFb030",
-      "username": "Tharnish Palanisamy",
-      "email": "tharnishpalanisamy3@gmail.com",
-      "title": "There was theft in my area",
-      "department": "LawAndOrder",
-      "feedback": "Chain snatching",
-      "rating": "5",
-      "createdOn": "2026-06-25T09:00:53.696Z",
-      "active": 1,
-      "remarks": "-",
-      "status": "Pending",
-      "id": "GtyZSPxljj4"
-    }
-  ],
+  "feedback": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
