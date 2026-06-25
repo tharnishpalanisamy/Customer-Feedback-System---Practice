@@ -134,8 +134,30 @@ saveFeedbackBtn.addEventListener('click' , async  function(){
 
 //dynamic view / filtering based on user choice
 
-let totalView = document.getElementById('totalView') 
-totalView.addEventListener('click' , function(){
-    localStorage.setItem('status','All')
+// let totalView = document.getElementById('totalView') 
+// totalView.addEventListener('click' , function(){
+//     localStorage.setItem('status','All')
+//     window.location.href = './userfeedback.html'
+// })
+
+
+let responseView = document.getElementById('responseView') 
+responseView.addEventListener('click' , function() {
+    localStorage.setItem('status' , 'Responded') 
+    window.location.href = './userfeedback.html'
+})
+
+let ratingView = document.getElementById('ratingView') 
+ratingView.addEventListener('click' , function(){
+    localStorage.setItem('status','All') 
+    let rating = document.querySelector('.averageRating').innerText 
+    localStorage.setItem('rating' , rating) 
+    window.location.href = './userfeedback.html'
+})
+
+
+let responseRateView = document.getElementById('responseRateView') 
+responseRateView.addEventListener('click' , function() {
+    localStorage.setItem('status' , 'Pending') 
     window.location.href = './userfeedback.html'
 })

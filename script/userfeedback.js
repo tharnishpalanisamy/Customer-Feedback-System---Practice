@@ -32,12 +32,60 @@ theme2.addEventListener('click', changeTheme)
 //user
 let user = JSON.parse(localStorage.getItem('user'))
 
+//dynamic filtering 
+let userStatus = localStorage.getItem('status') || 'All' 
+let userRating = Number(localStorage.getItem('rating')) || 'All';
+console.log(userRating);
+
+async function dynamicFiltering(){
+    let feedbackData = await fetch(`${FEEDBACKAPI}?userId=${user.id}`) 
+    let feedbacks = await feedbackData.json() 
+    if(userStatus != 'All') {
+        feedbacks = feedbacks.filter(feedback => feedback.status == userStatus) 
+    }
+    if(userRating != 'All') {
+        feedbacks  = feedbacks.filter(feedback => {
+            if(userRating == 1) {
+                return feedback.rating == 1 
+            }
+            else{
+                return feedback.rating >= userRating
+            }
+        })
+    }
+
+    document.getElementById('statusFilter').value = userStatus 
+    console.log(typeof(userRating));
+    
+    document.getElementById('ratingFilter').value = userRating
+    createFeedback(feedbacks)
+    localStorage.removeItem('status')
+    localStorage.removeItem('rating')
+}
+
+
+//if table is empty 
+
+
 //creating feedback 
 
 function createFeedback(feedbacks){
     let table = document.querySelector('.table') 
     let body = table.querySelector('tbody') 
     body.innerHTML = "" 
+    if (feedbacks.length === 0) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="10" class="text-center py-5 text-secondary">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No feedback found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+
 
     feedbacks.forEach((feedback,index) =>{
         let createdDate = new Date(feedback.createdOn) 
@@ -86,7 +134,12 @@ async function displayFeedback(){
     createFeedback(userFeedbacks)
 }
 
+if(localStorage.getItem('status')){
+    dynamicFiltering()
+}
+else{
 displayFeedback()
+}
 
 
 //filtering 
@@ -95,12 +148,14 @@ displayFeedback()
 let departmentFilter = document.getElementById('departmentFilter') 
 let statusFilter = document.getElementById('statusFilter')
 let searchTitle = document.getElementById('searchTitle') 
+let ratingFilter = document.getElementById('ratingFilter')
 
 
 async function filterFeedback(){
     let dept = departmentFilter.value;
     let status = statusFilter.value;
-    let value = searchTitle.value.toLowerCase();
+    let value = searchTitle.value.toLowerCase();  
+    let rating = ratingFilter.value
 
     let response = await fetch(`${FEEDBACKAPI}?userId=${user.id}`);
     let feedbacks = await response.json();
@@ -116,6 +171,16 @@ async function filterFeedback(){
     if (value !== '') {
         feedbacks = feedbacks.filter(feedback => feedback.title.toLowerCase().includes(value));
     }
+    if(rating != 'All') {
+        rating = Number(rating) 
+        if(rating > 1) {
+        feedbacks = feedbacks.filter(feedback => Number(feedback.rating) >= rating)
+        }
+        else if(rating == 1 ){
+            feedbacks = feedbacks.filter(feedback => Number(feedback.rating) == rating)
+        }
+    }
+
     feedbacks.sort((a,b) =>{
         return new Date(b.createdOn) - new Date(a.createdOn)
     })
@@ -139,7 +204,13 @@ statusFilter.addEventListener('change' , async function(){
 searchTitle.addEventListener('input' ,async function(){
     await filterFeedback()
 
-    
+})
+
+//rating
+
+ratingFilter.addEventListener('change' , async function(){
+    await filterFeedback()
+    searchTitle.value = ''
 })
 
 
