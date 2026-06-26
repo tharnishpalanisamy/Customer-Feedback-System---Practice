@@ -67,7 +67,7 @@ function createFeedback(feedbacks){
         }
         console.log(stars);
         
-        
+        let responseDate = new Date(feedback.respondedOn)
         body.innerHTML += `
         <tr>
             <td>${index+1}</td>
@@ -77,8 +77,10 @@ function createFeedback(feedbacks){
             <td>${feedback.feedback}</td>
             <td class = '${feedback.status} text'>${feedback.status}</td>
             <td>${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}</td>
-            <td class = 'text-center'>${feedback.respondedOn?feedback.respondedOn:'-'}</td> 
-            <td class = 'text-center'>${feedback.remarks}</td>
+            <td class = 'text-center'>
+            ${feedback.respondedOn? `${responseDate.getDate()}-${responseDate.getMonth()}-${responseDate.getFullYear()}`
+                  :'-'}</td> 
+            <td class = 'text-center'>${feedback.response || '-'}</td>
             <td class='text-center' >
             <i class="bi bi-pencil-square fs-5  ${feedback.status == 'Pending' ? 'active editFeedbackIcon' : 'blocked'}" 
             ${feedback.status=='Pending' ? ` data-bs-toggle="modal" data-bs-target="#editFeedbackModal" 

@@ -1,0 +1,35 @@
+.Responded{
+    background: #33a65f !important;
+}
+
+.Pending{
+    background: #EAB308 !important;
+}
+
+i.bi{
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+i.bi:hover{
+    transform: scale(1.2);
+}
+
+.blocked{
+    cursor: not-allowed !important;
+}
+
+
+.modal-card{
+    border: none !important;
+    border-radius: 12px !important;
+    overflow: hidden; 
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.5s;
+    background: var(--surface) !important;
+}
+
+.modal-icon:hover{
+    transform: scale(1) !important;
+}

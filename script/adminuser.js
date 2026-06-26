@@ -69,13 +69,13 @@ function createuser(users){
             <td>${index+1}</td>
             <td>${user.name}</td>
             <td>${user.email}</td>
-            <td>${user.role}</td>
+            <td class = '${user.role}'>${user.role}</td>
             <td>${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}</td>
             <td class = '${user.status}-bg text'>${user.status}</td>
             <td class='text-center'>
             <i class="bi bi-pencil-square fs-5 ${user.status == 'Active'?'active editBtn':'blocked'}" 
             ${user.status == 'Active'? `
-                data-bs-toggle="modal" data-bs-target="#editUserModal" data-id =${user.id}`
+                data-bs-toggle="modal" data-bs-target="#editUserModal" data-id =${user.id} title = 'Edit'`
                 :''}></i>
                 ${user.status == 'Active'?`<i class="bi bi-trash3-fill text-danger fs-5 ms-3 deleteBtn" data-id =${user.id} ></i>`
                     :`<i class="bi bi-arrow-counterclockwise ms-3 fs-5 text-success restoreBtn" data-id =${user.id}></i>`}</td>  
@@ -113,7 +113,7 @@ document.addEventListener('click' , async function(event){
         
         name.value = user.name 
         email.value = user.email 
-        role.value = user.role
+        role.value = user.role 
     }
 
     else if(event.target.classList.contains('deleteBtn')) {

@@ -11,3 +11,13 @@ i.bi:hover{
 .blocked{
     cursor: not-allowed !important;
 }
+
+.User{
+    background: #F8D7DA !important; 
+    color: #DC3545 !important;
+}
+
+.Admin{
+    background: #CFE2FF !important; 
+    color: #0D6EFD !important;
+}

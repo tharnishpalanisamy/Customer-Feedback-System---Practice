@@ -72,7 +72,8 @@ saveFeedbackBtn.addEventListener('click' , async  function(){
             rating : rating.value , 
             createdOn : new Date().toISOString() , 
             active:1 , 
-            remarks:"-" , 
+            response:"-" , 
+            respondedOn:'',
             status:'Pending' 
         }
 

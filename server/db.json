@@ -1,28 +1,28 @@
 {
   "users": [
     {
-      "name": "Tharnish",
+      "name": "Tharnish Palanisamy",
       "email": "tharnishpalanisamy3@gmail.com",
       "password": "Tharnish@2005",
-      "role": "user",
+      "role": "User",
       "createdOn": "2026-06-25T09:58:18.251Z",
-      "status": "Active",
+      "status": "In Active",
       "id": "yPXBVewu6f0"
     },
     {
       "name": "Arun Kumari",
       "email": "arun.kumar@example.com",
       "password": "Arun@123",
-      "role": "user",
+      "role": "User",
       "createdOn": "2026-06-21T10:15:00.000Z",
-      "status": "Active",
+      "status": "In Active",
       "id": "A001"
     },
     {
       "name": "Priya Sharma",
       "email": "priya.sharma@example.com",
       "password": "Priya@123",
-      "role": "user",
+      "role": "User",
       "createdOn": "2026-06-21T11:30:00.000Z",
       "status": "Active",
       "id": "A002"
@@ -31,7 +31,7 @@
       "name": "Rahul Verma",
       "email": "rahul.verma@example.com",
       "password": "Rahul@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-22T09:45:00.000Z",
       "status": "Active",
       "id": "A003"
@@ -40,16 +40,16 @@
       "name": "Sneha Reddy",
       "email": "sneha.reddy@example.com",
       "password": "Sneha@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-22T14:10:00.000Z",
-      "status": "In Active",
+      "status": "Active",
       "id": "A004"
     },
     {
       "name": "Karthik Raj",
       "email": "karthik.raj@example.com",
       "password": "Karthik@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-23T08:20:00.000Z",
       "status": "In Active",
       "id": "A005"
@@ -58,7 +58,7 @@
       "name": "Divya Nair",
       "email": "divya.nair@example.com",
       "password": "Divya@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-23T15:40:00.000Z",
       "status": "In Active",
       "id": "A006"
@@ -67,7 +67,7 @@
       "name": "Vignesh S",
       "email": "vignesh.s@example.com",
       "password": "Vignesh@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-24T09:00:00.000Z",
       "status": "In Active",
       "id": "A007"
@@ -76,7 +76,7 @@
       "name": "Meera Joshiyam",
       "email": "meera.joshi@example.com",
       "password": "Meera@123",
-      "role": "user",
+      "role": "User",
       "createdOn": "2026-06-24T13:25:00.000Z",
       "status": "Active",
       "id": "A008"
@@ -85,7 +85,7 @@
       "name": "Sanjay Patali",
       "email": "sanjay.patel@example.com",
       "password": "Sanjay@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-25T10:05:00.000Z",
       "status": "In Active",
       "id": "A009"
@@ -94,9 +94,9 @@
       "name": "Ananya Iyer",
       "email": "ananya.iyer@example.com",
       "password": "Ananya@123",
-      "role": "admin",
+      "role": "Admin",
       "createdOn": "2026-06-25T16:45:00.000Z",
-      "status": "In Active",
+      "status": "Active",
       "id": "A010"
     }
   ],
@@ -108,12 +108,15 @@
       "title": "1st",
       "department": "HealthCare",
       "feedback": "No one is working propelry",
-      "rating": "1",
+      "rating": "5",
       "createdOn": "2026-06-25T14:05:00.478Z",
       "active": 1,
       "remarks": "-",
       "status": "Pending",
-      "id": "_Bvw5fjFueY"
+      "id": "_Bvw5fjFueY",
+      "updatedOn": "2026-06-26T09:57:21.196Z",
+      "response": "why bro",
+      "respondedOn": "2026-06-26T09:57:39.699Z"
     },
     {
       "userId": "yPXBVewu6f0",
@@ -126,8 +129,10 @@
       "createdOn": "2026-06-25T14:06:12.574Z",
       "active": 1,
       "remarks": "-",
-      "status": "Pending",
-      "id": "_bQ1pQb8XvY"
+      "status": "Responded",
+      "id": "_bQ1pQb8XvY",
+      "response": "ok bro ",
+      "respondedOn": "2026-06-26T09:52:47.747Z"
     },
     {
       "userId": "yPXBVewu6f0",
@@ -140,8 +145,10 @@
       "createdOn": "2026-06-25T14:06:56.943Z",
       "active": 1,
       "remarks": "-",
-      "status": "Pending",
-      "id": "derP4TABdNM"
+      "status": "Responded",
+      "id": "derP4TABdNM",
+      "response": "ok",
+      "respondedOn": "2026-06-26T09:52:30.211Z"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
