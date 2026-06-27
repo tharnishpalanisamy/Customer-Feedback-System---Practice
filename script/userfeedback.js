@@ -1,6 +1,8 @@
 import { USERSAPI , FEEDBACKAPI } from './api.js';  
 
 
+//
+let finalFeedbacks = [] 
 //user
 let user = JSON.parse(localStorage.getItem('user'))
 
@@ -30,7 +32,9 @@ async function dynamicFiltering(){
     console.log(typeof(userRating));
     
     document.getElementById('ratingFilter').value = userRating
-    createFeedback(feedbacks)
+    finalFeedbacks = feedbacks 
+    currentPage = 1 
+    showPage(finalFeedbacks)
     localStorage.removeItem('status')
     localStorage.removeItem('rating')
 }
@@ -70,7 +74,7 @@ function createFeedback(feedbacks){
         let responseDate = new Date(feedback.respondedOn)
         body.innerHTML += `
         <tr>
-            <td>${index+1}</td>
+            <td>${((currentPage - 1)* items)+index+1}</td>
             <td>${feedback.title}</td>
             <td>${stars}</td>
             <td class = '${feedback.department}' >${feedback.department}</td>
@@ -103,7 +107,9 @@ async function displayFeedback(){
     userFeedbacks.sort((a,b)=>{
         return new Date(b.createdOn) - new Date(a.createdOn) 
     })
-    createFeedback(userFeedbacks)
+    finalFeedbacks = userFeedbacks 
+    currentPage = 1 
+    showPage(finalFeedbacks)
 }
 
 if(localStorage.getItem('status')){
@@ -156,7 +162,9 @@ async function filterFeedback(){
     feedbacks.sort((a,b) =>{
         return new Date(b.createdOn) - new Date(a.createdOn)
     })
-    createFeedback(feedbacks);
+    finalFeedbacks = feedbacks 
+    currentPage = 1 
+    showPage(finalFeedbacks)
 
 }
 
@@ -257,5 +265,99 @@ saveBtn.addEventListener('click' , async function(){
 })
 
 
+//pagination 
+
+let pagination = document.querySelector('.pagination') 
+
+let currentPage = 1 
+let totalPage = 0 
+const items = 10 
+
+function createPages() {
+    pagination.innerHTML = `<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+    <button href="#" class="page-link" data-type = 'previous'>Previous</button>
+    </li>`
+
+    for(let i = 1 ; i<= totalPage ; i++) {
+        pagination.innerHTML += `
+        <li class = 'page-item ${i == currentPage ? 'active' : ''}'>
+            <button class = 'page-link' data-page = '${i}'>${i}
+            </button>
+        </li>`
+    }
+    pagination.innerHTML += `
+    <li class="page-item ${currentPage == totalPage ? 'disabled' : ''}">
+    <button href="#" class="page-link" data-type = 'next'>Next</button>
+    </li>`
+}   
+
+function showPage(feedbacks) {
+    totalPage = Math.ceil((feedbacks.length) / items ) 
+    let start = (currentPage - 1) * items 
+    let end = start + items 
+    let currentFeedbacks = feedbacks.slice(start , end ) 
+    createFeedback(currentFeedbacks) 
+    createPages()
+} 
 
 
+pagination.addEventListener('click' , function(event){
+    if(event.target.closest('.disabled')){
+        return;
+    }
+
+    if(event.target.dataset.type == 'previous') {
+        if(currentPage > 1) {
+            currentPage --
+        }
+    }
+    else if(event.target.dataset.type == 'next') {
+        if(currentPage < totalPage) {
+            currentPage ++
+        }
+    }
+    else{
+        currentPage = Number(event.target.dataset.page) 
+    }
+    showPage(finalFeedbacks)
+})
+
+
+//logout 
+let logoutBtn = document.getElementById('logoutBtn') 
+logoutBtn.addEventListener('click' , async function(){
+    Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want Logout ?",
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true, 
+                confirmButtonColor: "#d33", 
+                cancelButtonColor:"#3085d6",
+                confirmButtonText: "Yes, Logout!"
+            }).then( (result) => {
+                if (result.isConfirmed) {
+                    document.querySelector('.logout-text').classList.add('d-none') 
+                    document.querySelector('.logout-spinner').classList.remove('d-none') 
+                    logoutBtn.disabled = true  
+                    localStorage.removeItem('user')
+                    setTimeout(() => {
+                        Swal.fire({
+                        title: "Logged Out!",
+                        text: "The user has been logged out.",
+                        icon: "success"
+                    });
+                    }, 1000);
+
+                    setTimeout(() => {
+                        document.querySelector('.logout-text').classList.remove('d-none') 
+                        document.querySelector('.logout-spinner').classList.add('d-none') 
+                        logoutBtn.disabled = false
+                        window.location.href = './login.html'
+                    }, 2000);
+                    
+                    
+                }
+            });    
+        }
+)  

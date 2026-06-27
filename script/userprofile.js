@@ -123,3 +123,45 @@ saveBtn.addEventListener('click' , async function(){
     let modal = bootstrap.Modal.getInstance(modalElement)
     modal.hide()
 })
+
+
+
+
+//logout 
+let logoutBtn = document.getElementById('logoutBtn') 
+logoutBtn.addEventListener('click' , async function(){
+    Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want Logout ?",
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true, 
+                confirmButtonColor: "#d33", 
+                cancelButtonColor:"#3085d6",
+                confirmButtonText: "Yes, Logout!"
+            }).then( (result) => {
+                if (result.isConfirmed) {
+                    document.querySelector('.logout-text').classList.add('d-none') 
+                    document.querySelector('.logout-spinner').classList.remove('d-none') 
+                    logoutBtn.disabled = true  
+                    localStorage.removeItem('user')
+                    setTimeout(() => {
+                        Swal.fire({
+                        title: "Logged Out!",
+                        text: "The user has been logged out.",
+                        icon: "success"
+                    });
+                    }, 1000);
+
+                    setTimeout(() => {
+                        document.querySelector('.logout-text').classList.remove('d-none') 
+                        document.querySelector('.logout-spinner').classList.add('d-none') 
+                        logoutBtn.disabled = false
+                        window.location.href = './login.html'
+                    }, 2000);
+                    
+                    
+                }
+            });    
+        }
+)  

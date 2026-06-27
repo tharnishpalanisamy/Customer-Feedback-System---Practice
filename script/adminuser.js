@@ -1,6 +1,6 @@
 import {USERSAPI} from './api.js'
 
-
+let filteredUsers = [] 
 //filtering logic 
 let roleFilter = document.getElementById('roleFilter') 
 let statusFilter = document.getElementById('statusFilter') 
@@ -21,8 +21,9 @@ async function filterusers(){
     if(searchName.value != '') {
         users = users.filter(user => user.name.toLowerCase().includes(searchName.value))
     }
-
-    createuser(users)
+    filteredUsers = users
+    currentPage = 1 
+    showPage(filteredUsers)
 }
 
 roleFilter.addEventListener('click' , filterusers) 
@@ -52,7 +53,7 @@ function createuser(users){
         let createdDate = new Date(user.createdOn) 
         body.innerHTML += `
         <tr>
-            <td>${index+1}</td>
+            <td>${((currentPage - 1 ) * items ) + index+1}</td>
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td class = '${user.role}'>${user.role}</td>
@@ -73,7 +74,9 @@ function createuser(users){
 async function displayuser(){
     let usersData = await fetch(USERSAPI)
     let users = await usersData.json() 
-    createuser(users)
+    filteredUsers = users
+    currentPage = 1 
+    showPage(filteredUsers)
 }
 displayuser()
 
@@ -242,4 +245,61 @@ saveBtn.addEventListener('click' , async function(){
     let modalElement = document.getElementById('editUserModal') 
     let modal = bootstrap.Modal.getInstance(modalElement) 
     modal.hide()
+})
+
+
+//pagination 
+let pagination = document.querySelector('.pagination') 
+
+let currentPage = 1 
+const items = 10 
+let totalPages = 0
+
+function createPages() {
+    pagination.innerHTML = `<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+    <button href="#" class="page-link" data-type = 'previous'>Previous</button>
+    </li>`
+
+    for(let i = 1 ; i<= totalPages ; i++) {
+        pagination.innerHTML += `
+        <li class = 'page-item ${i == currentPage ? 'active' : ''}'>
+            <button class = 'page-link' data-page = '${i}'>${i}
+            </button>
+        </li>`
+    }
+    pagination.innerHTML += `
+    <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+    <button href="#" class="page-link" data-type = 'next'>Next</button>
+    </li>`
+} 
+
+function showPage(users){
+    totalPages = Math.ceil((users.length||1) / items) 
+    let start = (currentPage - 1) * items
+    let end = start + items  
+    let currentUsers = users.slice(start , end ) 
+    createuser(currentUsers)
+    createPages()
+
+}
+
+
+//clicks 
+pagination.addEventListener('click' , async function(){
+    if(event.target.dataset.type == 'previous') {
+        if(currentPage > 1) {
+            currentPage --
+        }
+    }
+    else if(event.target.dataset.type == 'next') {
+        if(currentPage < totalPages) {
+            currentPage ++
+        }
+    }
+    else{
+        currentPage = Number(event.target.dataset.page)
+    }
+    console.log(filteredUsers);
+    
+    showPage(filteredUsers)
 })

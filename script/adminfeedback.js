@@ -76,7 +76,7 @@ function createFeedback(feedbacks){
         
         body.innerHTML += `
         <tr>
-            <td>${index+1}</td>
+            <td>${((currentPage - 1 ) * items ) + index+1}</td>
             <td>${feedback.title}</td>
             <td>${feedback.username}</td>
             <td class = '${feedback.department}'>${feedback.department}</td>
@@ -347,7 +347,7 @@ async function showPage(feedbacks){
     let end = start + items
     let currentFeedbacks = feedbacks.slice(start , end) 
     createFeedback(currentFeedbacks) 
-    await createPages(feedbacks)
+    createPages(feedbacks)
 }
 
 showPage()
