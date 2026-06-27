@@ -1,7 +1,7 @@
 import { FEEDBACKAPI } from "./api.js"; 
 
 
-
+let filteredFeedbacks = [] 
 
 //filter options
 
@@ -39,7 +39,7 @@ async function dynamicFiltering(){
     localStorage.removeItem('status')
 
 
-
+    filteredFeedbacks = feedbacks 
     createFeedback(feedbacks)
 
 }
@@ -103,7 +103,9 @@ async function displayFeedback(){
     let feedbacks = await feedbacksData.json()
     
     feedbacks.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn))
-    createFeedback(feedbacks)
+    filteredFeedbacks = feedbacks;
+    currentPage = 1;
+    showPage(filteredFeedbacks);
 }
 
 if(localStorage.getItem('department') || localStorage.getItem('status') || localStorage.getItem('rating')) {
@@ -271,7 +273,9 @@ async function filterFeedback(){
     feedbacks.sort((a,b) =>{
         return new Date(b.createdOn) - new Date(a.createdOn)
     })
-    createFeedback(feedbacks);
+    filteredFeedbacks = feedbacks;
+    currentPage = 1;
+    showPage(filteredFeedbacks);
 
 }
 
@@ -312,10 +316,7 @@ let currentPage = 1
 
 let pagination  = document.querySelector('.pagination') 
 
-async function createPages(){
-    let feedbackData = await fetch(FEEDBACKAPI) 
-    let feedbacks = await feedbackData.json() 
-
+function createPages(feedbacks){
     totalPages = Math.ceil(feedbacks.length / items ) 
     
     pagination.innerHTML = `
@@ -341,14 +342,12 @@ async function createPages(){
 }
 
 
-async function showPage(){
-    let feedbacksData = await fetch(FEEDBACKAPI) 
-    let feedbacks = await feedbacksData.json()
+async function showPage(feedbacks){
     let start = (currentPage - 1 ) * items 
     let end = start + items
     let currentFeedbacks = feedbacks.slice(start , end) 
     createFeedback(currentFeedbacks) 
-    await createPages()
+    await createPages(feedbacks)
 }
 
 showPage()
@@ -373,6 +372,14 @@ pagination.addEventListener('click' , async function(event){
         else{
             currentPage = Number(event.target.dataset.page)
         }
-        await showPage() 
+        await showPage(filteredFeedbacks) 
     }
 })
+
+
+// async function init(){
+//     let feedbacksData = await fetch(FEEDBACKAPI) 
+//     let feedbacks = await feedbacksData.json()
+//     await showPage(feedbacks)
+// }
+// init()
