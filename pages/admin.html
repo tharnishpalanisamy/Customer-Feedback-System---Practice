@@ -109,7 +109,7 @@
                     Welcome Back Admin ,  
                 </h2>
                 <p class="text">
-                    Manage all customer feedbacks from here.
+                    You have <span class="count active">0</span> pending feedbacks waiting for review. 
                 </p>
             </div>
 
@@ -214,7 +214,7 @@
 
             <!--Rating bar chart--> 
             <div class="container">
-                <div class="row">
+                <div class="row gt-4">
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card shadow-sm ">
                             <div class="card-header bg-white">
@@ -253,7 +253,7 @@
                     </div>
 
 
-
+                    <!--Dept wise average rating-->
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card shadow-sm">
                             <div class="card-header bg-white">
@@ -263,29 +263,29 @@
                             </div>
 
                             <div class="card-body">
-                                <p class="mb-1">Health Care <span class="healthCount text"></span></p>
+                                <p class="mb-1 text">Health Care <span class="healthCount text"></span></p>
                                 <div class="progress mb-3">
                                     <div class="progress-bar bg-success healthCareWidth"></div>
                                 </div>
 
-                                <p class="mb-1">Infrastructure <span class="infrastructureCount text"></span></p> 
+                                <p class="mb-1 text">Infrastructure <span class="infrastructureCount text"></span></p> 
                                 <div class="progress mb-3">
-                                    <div class="progress-bar infrastructureWidth"></div>
+                                    <div class="progress-bar bg-info infrastructureWidth"></div>
                                 </div>
 
-                                <p class="mb-1">Law and Order <span class="lawAndOrderCount"></span></p>
+                                <p class="mb-1 text">Law and Order <span class="lawAndOrderCount"></span></p>
                                 <div class="progress mb-3">
-                                    <div class="progress-bar lawAndOrderWidth"></div>
+                                    <div class="progress-bar bg-danger lawAndOrderWidth"></div>
                                 </div>
 
-                                <p class="mb-1">Administration <span class="administrationCount"></span></p>
+                                <p class="mb-1 text">Administration <span class="administrationCount"></span></p>
                                 <div class="progress mb-3">
-                                    <div class="progress-bar administrationWidth"></div>
+                                    <div class="progress-bar purple administrationWidth"></div>
                                 </div>
 
-                                <p class="mb-1">Overall Average <span class="overallCount"></span></p>
+                                <p class="mb-1 text">Overall Average <span class="overallCount"></span></p>
                                 <div class="progress mb-3">
-                                    <div class="progress-bar overallWidth"></div>
+                                    <div class="progress-bar bg-primary overallWidth"></div>
                                 </div>
                             </div>
                         </div>
@@ -312,35 +312,35 @@
         <div class="offcanvas-body">
             <ul class="nav flex-column gap-2">
                 <li>
-                    <a href="#" class="nav-link fw-medium ">
+                    <a href="#" class="nav-link fw-medium menu-item active">
                         <i class="bi bi-speedometer2 me-2"></i>
                         Dashboard
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" class="nav-link fw-medium">
+                    <a href="adminfeedback.html" class="nav-link fw-medium menu-item">
                         <i class="bi bi-chat-left-text me-2"></i>
                         Feedbacks
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" class="nav-link fw-medium">
+                    <a href="adminuser.html" class="nav-link fw-medium menu-item">
                         <i class="bi bi-people me-2"></i>
                         Users
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" class="nav-link fw-medium">
+                    <a href="adminprofile.html" class="nav-link fw-medium menu-item">
                         <i class="bi bi-person me-2"></i>
                         Profile
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" class="nav-link red fw-medium">
+                    <a href="#" class="nav-link red fw-medium menu-item red logoutBtn">
                         <i class="bi bi-box-arrow-right me-2"></i>
                         Logout
                     </a>

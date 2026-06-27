@@ -30,7 +30,7 @@ async function dynamicFiltering(){
     }
     departmentFilter.value = department 
     statusFilter.value = status 
-    ratingFilter.value = Number(rating) 
+    ratingFilter.value = Number(rating)  || 'All'
     console.log(Number(rating));
     
     localStorage.removeItem('rating')
@@ -78,7 +78,7 @@ function createFeedback(feedbacks){
             <td>${index+1}</td>
             <td>${feedback.title}</td>
             <td>${feedback.username}</td>
-            <td>${feedback.department}</td>
+            <td class = '${feedback.department} text'>${feedback.department}</td>
             <td>${stars}</td>
             <td>${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}</td>
             <td class = '${feedback.status} text'>${feedback.status}</td>
@@ -173,6 +173,29 @@ document.addEventListener('click' , async function(event){
         responseRating.value = data.rating 
         
     }
+
+     else if(event.target.classList.contains('logoutBtn')) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want Logout ?",
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true, // Confirm button moves to the right
+                confirmButtonColor: "#d33", 
+                cancelButtonColor:"#3085d6",
+                confirmButtonText: "Yes, Logout!"
+            }).then( (result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('user')
+                    Swal.fire({
+                        title: "Logged Out!",
+                        text: "The user has been logged out.",
+                        icon: "success"
+                    });
+                    window.location.href = './login.html'
+                }
+            });    
+        }
 })
 
 

@@ -30,20 +30,6 @@ statusFilter.addEventListener('click' , filterusers)
 searchName.addEventListener('input' , filterusers)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //creating user 
 
 function createuser(users){
@@ -188,6 +174,29 @@ document.addEventListener('click' , async function(event){
             }
         }); 
     }
+
+     else if(event.target.classList.contains('logoutBtn')) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want Logout ?",
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true, // Confirm button moves to the right
+                confirmButtonColor: "#d33", 
+                cancelButtonColor:"#3085d6",
+                confirmButtonText: "Yes, Logout!"
+            }).then( (result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('user')
+                    Swal.fire({
+                        title: "Logged Out!",
+                        text: "The user has been logged out.",
+                        icon: "success"
+                    });
+                    window.location.href = './login.html'
+                }
+            });    
+        }
 
 
 })

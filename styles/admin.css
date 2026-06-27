@@ -73,9 +73,34 @@ a{
 }
 
 .Responded{
-    background: #33a65f !important;
+    background-color: #22C55E !important;
+    color: white;
 }
 
 .Pending{
-    background: #EAB308 !important;
+    background-color: #F59E0B !important;
+    color: white;
+}
+.purple{
+    background: purple !important;
+}
+
+.Health{
+    background-color: #22C55E !important;   /* Green */
+    color: white;
+}
+
+.Infrastructure{
+    background-color: #0D6EFD !important;   /* Blue */
+    color: white;
+}
+
+.Law{
+    background-color: #DC3545 !important;   /* Red */
+    color: white;
+}
+
+.Administration{
+    background-color: #6F42C1 !important;   /* Purple */
+    color: white;
 }

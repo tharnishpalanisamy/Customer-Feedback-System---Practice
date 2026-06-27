@@ -1,9 +1,11 @@
 .Responded{
-    background: #33a65f !important;
+    background-color: #22C55E !important;
+    color: white;
 }
 
 .Pending{
-    background: #EAB308 !important;
+    background-color: #F59E0B !important;
+    color: white;
 }
 
 i.bi{
@@ -32,4 +34,24 @@ i.bi:hover{
 
 .modal-icon:hover{
     transform: scale(1) !important;
+}
+
+.Health{
+    background-color: #22C55E !important; 
+    color: white;
+}
+
+.Infrastructure{
+    background-color: #0D6EFD !important;   
+    color: white;
+}
+
+.Law{
+    background-color: #DC3545 !important;  
+    color: white;
+}
+
+.Administration{
+    background-color: #6F42C1 !important;  
+    color: white;
 }

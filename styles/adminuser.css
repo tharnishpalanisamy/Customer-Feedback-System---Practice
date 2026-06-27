@@ -13,11 +13,11 @@ i.bi:hover{
 }
 
 .User{
-    background: #F8D7DA !important; 
-    color: #DC3545 !important;
+    background-color: #D1FAE5 !important;
+    color: #065F46 !important;
 }
 
 .Admin{
-    background: #CFE2FF !important; 
-    color: #0D6EFD !important;
+    background-color: #DBEAFE !important;
+    color: #1D4ED8 !important;
 }
