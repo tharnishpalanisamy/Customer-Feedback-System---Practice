@@ -1,44 +1,112 @@
 import { USERSAPI } from './api.js';
 
+
+//toaster
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    timeOut: 3000
+};
 //create account 
 
 //validate
-async function validate(name , email , password , confirmPassword){
-    if(!name || !email || !password ||!confirmPassword) {
-        alert('replacewith toaster') 
-        return false ; 
-    }
-    let nameRegex = /^[a-zA-Z ]{3,}$/ 
-    let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/  
-    let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*=-])[a-zA-Z0-9!@#$%^&*=-]{8,}$/
+async function validate(name, email, password, confirmPassword) {
 
-    if(!nameRegex.test(name)){
-        alert('Name should only have letters and spaces') ; 
-        return false ; 
-    }
-    if(!emailRegex.test(email)){
-        alert('email format is wrong') ; 
-        return false ; 
-    }
-    let emailData = await fetch(`${USERSAPI}?email=${email}`) 
-    let emailCheck = await emailData.json() 
+    let nameInput = document.getElementById('name');
+    let emailInput = document.getElementById('email');
+    let passwordInput = document.getElementById('password');
+    let confirmPasswordInput = document.getElementById('confirm-password');
 
-    if(emailCheck.length > 0) {
-        alert('email already exists') ; 
-        return false
+    // Reset validation
+    [nameInput, emailInput, passwordInput, confirmPasswordInput].forEach(input => {
+        input.classList.remove("is-valid", "is-invalid");
+    });
+
+    // Empty validation
+    let isValid = true;
+
+    if (!name) {
+        nameInput.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        nameInput.classList.add("is-valid");
     }
 
-    if(!passwordRegex.test(password)) {
-        alert('Password should contain atleast 1 capital , 1 number and 1 symbol') 
-        return false 
-    }
-    if(password != confirmPassword) {
-        alert('passwords does not match')
-        return false 
+    if (!email) {
+        emailInput.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        emailInput.classList.add("is-valid");
     }
 
-    return true 
+    if (!password) {
+        passwordInput.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        passwordInput.classList.add("is-valid");
+    }
 
+    if (!confirmPassword) {
+        confirmPasswordInput.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        confirmPasswordInput.classList.add("is-valid");
+    }
+
+    if (!isValid) {
+        toastr.warning("Required Fields cannot be empty");
+        return false;
+    }
+
+    let nameRegex = /^[a-zA-Z ]{3,}$/;
+    let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+    let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*=-])[a-zA-Z0-9!@#$%^&*=-]{8,}$/;
+
+    // Name
+    if (!nameRegex.test(name)) {
+        nameInput.classList.remove("is-valid");
+        nameInput.classList.add("is-invalid");
+        toastr.warning("Name should only have letters and spaces");
+        return false;
+    }
+
+    // Email format
+    if (!emailRegex.test(email)) {
+        emailInput.classList.remove("is-valid");
+        emailInput.classList.add("is-invalid");
+        toastr.warning("Email format is wrong");
+        return false;
+    }
+
+    // Email exists
+    let emailData = await fetch(`${USERSAPI}?email=${email}`);
+    let emailCheck = await emailData.json();
+
+    if (emailCheck.length > 0) {
+        emailInput.classList.remove("is-valid");
+        emailInput.classList.add("is-invalid");
+        toastr.warning("Email already exists");
+        return false;
+    }
+
+    // Password
+    if (!passwordRegex.test(password)) {
+        passwordInput.classList.remove("is-valid");
+        passwordInput.classList.add("is-invalid");
+        toastr.warning("Password should contain at least 1 capital, 1 number and 1 symbol");
+        return false;
+    }
+
+    // Confirm password
+    if (password !== confirmPassword) {
+        confirmPasswordInput.classList.remove("is-valid");
+        confirmPasswordInput.classList.add("is-invalid");
+        toastr.warning("Passwords do not match");
+        return false;
+    }
+
+    return true;
 }
 
 let registerBtn = document.getElementById('registerBtn') 
@@ -67,8 +135,10 @@ registerBtn.addEventListener('click' , async function(){
             body:JSON.stringify(user)
         })
         
-        alert('Account created')
-        window.location.href = './login.html'
+        toastr.success('Account created')
+        setTimeout(() => {
+            window.location.href = './login.html';
+        }, 1200);
 
         name.value = '' 
         email.value = '' 
@@ -76,3 +146,20 @@ registerBtn.addEventListener('click' , async function(){
         confirmPassword.value = ''
     }
 })
+
+
+document.getElementById("name").addEventListener("input", function () {
+    this.classList.remove("is-invalid", "is-valid");
+});
+
+document.getElementById("email").addEventListener("input", function () {
+    this.classList.remove("is-invalid", "is-valid");
+});
+
+document.getElementById("password").addEventListener("input", function () {
+    this.classList.remove("is-invalid", "is-valid");
+});
+
+document.getElementById("confirm-password").addEventListener("input", function () {
+    this.classList.remove("is-invalid", "is-valid");
+});
