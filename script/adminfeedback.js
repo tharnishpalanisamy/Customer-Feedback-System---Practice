@@ -97,7 +97,7 @@ function createFeedback(feedbacks){
             <td>${feedback.username}</td>
             <td class = '${feedback.department}'>${feedback.department}</td>
             <td>${stars}</td>
-            <td>${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}</td>
+            <td>${createdDate.getDate()}-${createdDate.getMonth()+1}-${createdDate.getFullYear()}</td>
             <td class = '${feedback.status}'>${feedback.status}</td>
             <td>
                 <i class="bi bi-eye-fill active viewBtn fs-5" title="View" data-id = ${feedback.id} data-bs-toggle="modal" data-bs-target="#viewFeedbackModal"></i>
@@ -277,7 +277,8 @@ saveResponse.addEventListener('click' , async function(){
 
 
 //filtering 
-
+let fromDate = document.getElementById('fromDate') 
+let toDate = document.getElementById('toDate')
 
 async function filterFeedback(){
     try{
@@ -285,7 +286,8 @@ async function filterFeedback(){
         let status = statusFilter.value;
         let value = searchTitle.value.toLowerCase();  
         let rating = ratingFilter.value
-
+        let from  =  fromDate.value ? new Date(fromDate.value).setHours(0,0,0,0) : ''
+        let to = toDate.value ? new Date(toDate.value).setHours(23, 59, 59, 999): ''
         let response = await fetch(`${FEEDBACKAPI}`);
         let feedbacks = await response.json();
 
@@ -309,7 +311,19 @@ async function filterFeedback(){
                 feedbacks = feedbacks.filter(feedback => Number(feedback.rating) == rating)
             }
         }
-
+        if(from && to) {
+            feedbacks = feedbacks.filter(feedback =>{
+                 let feedbackDate = new Date(feedback.createdOn)
+                 return feedbackDate >= from && feedbackDate <= to 
+            })
+        }
+        else if(from) {
+            feedbacks = feedbacks.filter(feedback =>{
+                let feedbackDate = new Date(feedback.createdOn)
+                return feedbackDate >= from 
+            })
+                 
+        }
         feedbacks.sort((a,b) =>{
             return new Date(b.createdOn) - new Date(a.createdOn)
         })
@@ -322,6 +336,34 @@ async function filterFeedback(){
     }
 
 }
+
+//date filtering 
+let applyDate = document.getElementById('applyDate') 
+applyDate.addEventListener('click' , async function(){
+    if(!fromDate.value) {
+        toastr.warning('Please enter the date from which you want to filter') 
+        return 
+    }
+    document.querySelector('.dateFilterIcon').classList.remove('text')
+    document.querySelector('.dateFilterIcon').classList.add('text-primary')
+    await filterFeedback()
+
+    //hide modal 
+    let modalElement = document.getElementById('filterDateModal') 
+    let modal = bootstrap.Modal.getInstance(modalElement) 
+    modal.hide() 
+
+})
+
+//reset date filter button 
+let resetFilter = document.getElementById('resetFilter') 
+resetFilter.addEventListener('click' , async function(){
+    document.querySelector('.dateFilterIcon').classList.add('text')
+    document.querySelector('.dateFilterIcon').classList.remove('text-primary')
+    fromDate.value = '' 
+    toDate.value = '' 
+    await filterFeedback()
+})
 
 //dept
 departmentFilter.addEventListener('change' , async function(){
@@ -394,7 +436,6 @@ async function showPage(feedbacks){
     createPages(feedbacks)
 }
 
-showPage()
 
 
 //clicking each page 

@@ -1,3 +1,21 @@
 .box{
     box-shadow: 0 12px 35px rgba(0,0,0,.08);
 }
+
+.content { 
+  background: url(../assets/Images/sample.jpg) !important; 
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  min-height: 300px; /* Adjust as needed */
+}
+
+body{
+    background:
+        linear-gradient(rgba(15,23,42,.7), rgba(15,23,42,.7)),
+        url("../assets/Images/bg.jpg") center center/cover no-repeat fixed;
+}
+
+.box{
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px !important; 
+}

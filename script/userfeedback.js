@@ -101,7 +101,7 @@ function createFeedback(feedbacks){
                 data-id = ${feedback.id}  ` : ''}
             ></i>
             <i class="bi bi-trash3 fs-5 ms-2  
-            ${feedback.status =='Pending' ? 'text-danger deleteFeedbackIcon':'blocked text'} " data-id = ${feedback.id}></i>
+            ${feedback.status =='Pending' ? 'text-danger deleteFeedbackIcon':'blocked text-dark'} " data-id = ${feedback.id}></i>
             </td>
             
         </tr>
