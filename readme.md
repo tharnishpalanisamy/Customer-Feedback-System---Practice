@@ -124,3 +124,50 @@ The Application uses Toastr to provide necessary alert messages to the user in a
 8) Confirmation Dialogs
 The application uses sweetAlert2 to show conformation messages during critical operations like logout , delete etc.. 
 
+
+Screenshots 
+
+
+## Home Page
+
+![Home Page](assets/screenshots/home.png)
+
+##about
+![about Page](assets/screenshots/about.png)
+
+##contact
+![contact Page](assets/screenshots/contact.png)
+
+
+
+## login page 
+![login Page](assets/screenshots/login.png)
+
+## register page 
+![register Page](assets/screenshots/register.png) 
+
+## user dashboard 
+![userdashboard Page](assets/screenshots/userdashboard.png)
+
+## user Feedback 
+![userfeedback Page](assets/screenshots/userfeedback.png)
+
+## user Profile 
+![userprofile Page](assets/screenshots/userprofile.png)
+
+
+## admin dashboard 
+![admindashboard Page](assets/screenshots/admindashboard.png)
+![admindashboard2 Page](assets/screenshots/admindashboard2.png)
+
+
+## admin Feedback 
+![adminfeedback Page](assets/screenshots/adminfeedback.png)
+
+## admin Profile 
+![adminprofile Page](assets/screenshots/adminprofile.png)
+
+
+
+
+
