@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>Customer Plus</title>
+<link rel="shortcut icon" href="assets/icons/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="styles/styles.css">
 <link href="
 https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
@@ -14,11 +15,11 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
 
 <body class="bg">
 
-<nav class="navbar navbar-expand-lg text surface">
+<nav class="navbar navbar-expand-lg text surface border-bottom">
     <div class="container">
 
         <a class="navbar-brand fw-bold" href="#">
-            Customer Plus
+            Customer Plus 
         </a>
 
         <!-- Mobile Controls -->
@@ -28,7 +29,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
                 <i class="bi bi-moon-fill fs-4" id="dark"></i>
             </button>
 
-            <button class="navbar-toggler"
+            <button class="navbar-toggler text"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarMenu">
@@ -40,15 +41,15 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
 
             <ul class="navbar-nav mx-auto text-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link active fw-medium" href="#">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link  fw-medium" href="#about">About</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link  fw-medium" href="#contact">Contact</a>
                 </li>
             </ul>
 
@@ -80,24 +81,189 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
     </div>
 </nav>
 
-<!-- <div class="container mt-5">
-    <div class="row">
-        <div class="col-6 col-md-4 col-lg-3">
-            <div class="card surface">
-                <div class="card-body text">
-                    <img src="assets/svg/monster.svg" alt="" class="card-img-top"> 
-                    <p class="card-text">This is a monster</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="d-flex justify-content-between">
-                        <span>View More</span>
-                        <span>-></span>
-                    </a>
-                </div>
+<div class="container py-5 mt-5 mb-5 ">
+    <div class="row align-items-center">
+
+        <div class="col-lg-6">
+            <span class="badge bg-success px-3 py-2 fs-6 mb-3">
+                Customer Feedback Management
+            </span>
+
+            <h3 class="fw-bold display-5 mb-3 text">
+                Manage Customer Feedback with Ease
+            </h3>
+
+            <p class="lead text-secondary">
+                View, organize, and respond to customer feedback from one centralized dashboard.
+                Monitor ratings, track response status, and ensure every concern is addressed promptly.
+            </p>
+            <div class="btn-container d-flex  gap-3 mt-2">
+                <a href="pages/register.html" class="btn btn-primary">Get started</a>
+                <a href="#about" class="btn btn-secondary">Learn More</a>
             </div>
         </div>
+
+        <!-- Right Content -->
+        <div class="d-none d-md-inline col-lg-6 text-center">
+            <img src="assets/svg/Online customer reviews.svg"
+                 class="img-fluid img"
+                 style="max-height:420px;"
+                 alt="Feedback Illustration">
+        </div>
+
     </div>
-</div> -->
+</div>
+
+<div class="container-fluid surface mt-5 mb-5 pb-5" id="about">
+    <div class="container mt-5 pt-4">
+        <h3 class="text fw-bold text-center mt-4">Why Choose Customer Plus?</h3>
+        <div class="row mt-5 g-5">
+            <div class="col-6 col-md-3">
+                <div class="card border-0  h-100 p-3 surface text">
+                        <div class="card-body text-center p-2 ">
+                            <i class="bi bi-pencil-square display-5 text-primary"></i>
+                            <h4 class="mt-3">
+                                Submit Feedback
+                            </h4>
+                            <p class="text-secondary pt-3">Share complaints, suggestions and reviews in just a few clicks.
+                            </p>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="card border-0  h-100 p-3 surface text">
+                    <div class="card-body text-center" >
+                        <i class="bi bi-clock-history display-5 text-success"></i>
+                        <h4 class="mt-3">
+                            Track Status
+                        </h4>
+                        <p class=" text-secondary pt-3">Know whether your feedback is Pending, In Progress or Responded.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="card border-0  h-100 p-3 surface text">
+                    <div class="card-body text-center">
+                        <i class="bi bi-bar-chart display-5 text-warning"></i>
+                        <h3 class="mt-3">Analytics</h3>
+                        <p class="pt-3 text-secondary">View dashboard statistics and monitor activity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="card border-0  text surface h-100 p-3">
+                    <div class="card-body text-center">
+                        <i class="bi bi-shield-check display-5 text-danger"></i>
+                        <h3 class="mt-3">Secure Platform</h3>
+                        <p class="text-secondary pt-3">
+                            Authentication, validation and protected access.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--Flow--> 
+    <div class="container">
+        <h2 class="mt-4 pt-4 fw-bold text-center text">How It Works</h2>
+
+            <div class="row text-center mt-4 g-4">
+                <div class="col-12 col-md-3">
+                    <i class="bi bi-person-plus display-4 active"></i>
+                    <h5 class="mt-3 text">Register</h5>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <i class="bi bi-chat-left-text display-4 active"></i>
+                    <h5 class="mt-3 text">Submit Feedback</h5>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <i class="bi bi-search display-4 active"></i>
+                    <h5 class="mt-3 text">Admin Reviews</h5>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <i class="bi bi-check-circle display-4 active"></i>
+                    <h5 class="mt-3 text">Receive Response</h5>
+                </div>
+            </div>
+    </div>
+    
+</div>
+
+<footer class="container border-top mt-5 pt-5 pb-3" id="contact">
+
+    <div class="row gy-4">
+
+        <div class="col-md-5 text-center text-md-start">
+            <h3 class="fw-bold text">Customer Plus</h3>
+
+            <p class="text-secondary mt-3">
+                A modern platform to collect, manage and respond <br> to customer
+                feedback efficiently.
+            </p>
+        </div>
+
+        <div class="col-md-3 text-center">
+            <h4 class="text">Quick Links</h4>
+
+            <ul class="list-unstyled mt-3">
+                <li class="mb-2">
+                    <a href="#" class="text-secondary text-decoration-none">Home</a>
+                </li>
+
+                <li class="mb-2">
+                    <a href="#about" class="text-secondary text-decoration-none">About</a>
+                </li>
+
+                <li class="mb-2">
+                    <a href="pages/login.html" class="text-secondary text-decoration-none">Login</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <h4 class="text">Connect</h4>
+
+            <div class="mt-3 d-flex gap-2 justify-content-center">
+
+                <!-- <a href="#" class="btn btn-outline-primary rounded-circle mx-1">
+                    <i class="bi bi-facebook"></i>
+                </a>
+
+                <a href="#" class="btn btn-outline-info rounded-circle mx-1">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+
+                <a href="#" class="btn btn-outline-danger rounded-circle mx-1">
+                    <i class="bi bi-instagram"></i>
+                </a> -->
+
+                <a href="#" class="text-decoration-none text social-icon"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="#" class="text-decoration-none text social-icon"><i class="bi bi-twitter-x fs-4"></i></a>
+                <a href="#" class="text-decoration-none text social-icon"><i class="bi bi-instagram fs-4"></i></a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <hr class="text">
+
+    <p class="text-secondary text-center mb-0">
+        © 2026 Customer Plus. All Rights Reserved.
+    </p>
+
+</footer>
 
 
 <script src="script/script.js"></script>

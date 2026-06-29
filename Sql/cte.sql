@@ -1,0 +1,20 @@
+--CTE 
+
+--CTE FOR FETCHING THE RECENT FEEBDACKS 
+
+WITH RecentFeedbacks AS 
+(
+SELECT * , ROW_NUMBER() OVER(ORDER BY createdOn DESC) AS rn
+FROM feedbacks
+)
+SELECT * FROM RecentFeedbacks WHERE rn <= 10  -- FETCHES RECENT 10 FEEDBACKS  
+
+
+
+--CTE FOR FETCHING ROW BASED ON RATING 
+WITH FilterRating AS 
+(
+SELECT * , DENSE_RANK() OVER(ORDER BY rating DESC ) AS rating 
+FROM feedbacks 
+)
+SELECT * FROM FilterRating WHERE rating = 3 --FETCHES RATING WITH 3 STARS 

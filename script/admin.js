@@ -1,16 +1,26 @@
-    import { USERSAPI , FEEDBACKAPI } from './api.js'; 
+import { USERSAPI , FEEDBACKAPI } from './api.js'; 
 
 
-    //getting the user
-    let user = JSON.parse(localStorage.getItem('user')) || '' 
-    if(!user){
-        window.location.href = './login.html'
-    }
+//toaster
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    timeOut: 3000
+};
 
 
-    //fetching the statistics for dashboard 
+//getting the user
+let user = JSON.parse(localStorage.getItem('user')) || '' 
+if(!user){
+    window.location.href = './login.html'
+}
 
-    async function displayStatistics(){
+
+//fetching the statistics for dashboard 
+
+async function displayStatistics(){
+    try{
         let data = await fetch(`${FEEDBACKAPI}`)
         let feedbacks = await data.json() 
 
@@ -31,79 +41,93 @@
         document.getElementById('averageRating').innerText = Math.round(totalRating / length).toFixed(1) 
 
         document.querySelector('.count').innerText = pending
-    }
-
-    displayStatistics()
-
-
-    //admin dashboard table 
-    //Creating feedback
-    function createFeedback(feedbacks){
-        let table = document.querySelector('.table') 
-        let body = table.querySelector('tbody') 
-        body.innerHTML = "" 
-        if (feedbacks.length === 0) {
-            body.innerHTML = `
-                <tr>
-                    <td colspan="10" class="text-center py-5 text-secondary">
-                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                        No feedback found.
-                    </td>
-                </tr>
-            `;
-            return;
-        }
+        document.querySelector('.toastCount').innerText = `👋 Welcome back, Admin! There are ${pending} feedbacks Waiting to be reviewed`
         
-        feedbacks.forEach((feedback,index) =>{
-            let createdDate = new Date(feedback.createdOn) 
-            let n =  Number(feedback.rating)
-            
-            let stars = '' 
-            for(let i = 1 ; i<= n ; i++){
-                stars += '⭐'
-            }
-            console.log(stars);
-            
-            
-            body.innerHTML += `
+    }
+    catch(error){
+        console.log('error'); 
+        toastr.error('Something Went Wrong !')   
+    }
+}
+
+displayStatistics()
+
+
+//admin dashboard table 
+//Creating feedback
+function createFeedback(feedbacks){
+    let table = document.querySelector('.table') 
+    let body = table.querySelector('tbody') 
+    body.innerHTML = "" 
+    if (feedbacks.length === 0) {
+        body.innerHTML = `
             <tr>
-                <td>${feedback.title}</td>
-                <td>${feedback.username}</td>
-                <td class = '${feedback.department}'>${feedback.department}</td>
-                <td>${stars}</td>
-                <td class = '${feedback.status}'>${feedback.status}</td>
-                <td class="text-center">
-                    <button class="btn btn-sm btn-primary viewBtn" data-id = ${feedback.id}  data-bs-toggle="modal" data-bs-target="#viewFeedbackModal" >
-                        <i class="bi bi-eye me-1"></i> View
-                    </button>
+                <td colspan="10" class="text-center py-5 text-secondary">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No feedback found.
                 </td>
             </tr>
-            `
-        })
+        `;
+        return;
     }
+    
+    feedbacks.forEach((feedback,index) =>{
+        let createdDate = new Date(feedback.createdOn) 
+        let n =  Number(feedback.rating)
+        
+        let stars = '' 
+        for(let i = 1 ; i<= n ; i++){
+            stars += '⭐'
+        }
+        console.log(stars);
+        
+        
+        body.innerHTML += `
+        <tr>
+            <td>${feedback.title}</td>
+            <td>${feedback.username}</td>
+            <td class = '${feedback.department}'>${feedback.department}</td>
+            <td>${stars}</td>
+            <td class = '${feedback.status}'>${feedback.status}</td>
+            <td class="text-center">
+                <button title = 'View' class="btn btn-sm btn-primary viewBtn" data-id = ${feedback.id}  data-bs-toggle="modal" data-bs-target="#viewFeedbackModal" >
+                    <i class="bi bi-eye me-1" title = 'View'></i> View
+                </button>
+            </td>
+        </tr>
+        `
+    })
+}
 
-    async function displayLatestFeedback(){
+async function displayLatestFeedback(){
+    try{
         let feedbackData = await fetch(`${FEEDBACKAPI}`) 
         let data = await feedbackData.json() 
         data.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)) 
         data = data.splice(0,5) 
         createFeedback(data)
     }
-    displayLatestFeedback()
+    catch(error) {
+        console.log(error);
+        toastr.error('Something went wrong')
+    }
+}
+displayLatestFeedback()
 
 
 
-    //modal elements
-    let modalName = document.querySelector('.modalName') 
-    let modalRating = document.querySelector('.modalRating') 
-    let modalDate = document.querySelector('.modalDate') 
-    let modalFeedback = document.querySelector('.modalFeedback')
-    let title = document.querySelector('.title')
+//modal elements
+let modalName = document.querySelector('.modalName') 
+let modalRating = document.querySelector('.modalRating') 
+let modalDate = document.querySelector('.modalDate') 
+let modalFeedback = document.querySelector('.modalFeedback')
+let title = document.querySelector('.title')
 
-    let currentFeedback ; 
+let currentFeedback ; 
 
-    document.addEventListener('click' , async function(event){
-        if(event.target.classList.contains('viewBtn')) {
+document.addEventListener('click' , async function(event){
+    if(event.target.classList.contains('viewBtn')) {
+        try{
             currentFeedback = event.target.dataset.id ; 
             console.log(currentFeedback);
             
@@ -131,35 +155,54 @@
             modalFeedback.innerText = data.feedback
             title.innerText = data.title
         }
-        else if(event.target.classList.contains('logoutBtn')) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Do you want Logout ?",
-                icon: "warning",
-                showCancelButton: true,
-                reverseButtons: true, // Confirm button moves to the right
-                confirmButtonColor: "#d33", 
-                cancelButtonColor:"#3085d6",
-                confirmButtonText: "Yes, Logout!"
-            }).then( (result) => {
-                if (result.isConfirmed) {
-                    localStorage.removeItem('user')
-                    Swal.fire({
-                        title: "Logged Out!",
-                        text: "The user has been logged out.",
-                        icon: "success"
-                    });
-                    window.location.href = './login.html'
-                }
-            });    
+        catch(error){
+            console.log(error); 
+            toastr.error('something Went Wrong')
         }
-    })
+    }
+    else if(event.target.classList.contains('logoutBtn')) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want Logout ?",
+            icon: "warning",
+            showCancelButton: true,
+            reverseButtons: true, // Confirm button moves to the right
+            confirmButtonColor: "#d33", 
+            cancelButtonColor:"#3085d6",
+            confirmButtonText: "Yes, Logout!"
+        }).then( (result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('user')
+                localStorage.removeItem('theme')
+                document.querySelectorAll('.logout-text').forEach(el => el.classList.add('d-none')  )
+                document.querySelectorAll('.logout-spinner').forEach(el => el.classList.remove('d-none')  )
+                document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = true  )
+                
+                setTimeout(() => {
+                    Swal.fire({
+                    title: "Logged Out!",
+                    text: "The user has been logged out.",
+                    icon: "success"
+                }, 1000);
+                });
+                setTimeout(() => {
+                    document.querySelectorAll('.logout-text').forEach(el => el.classList.remove('d-none')  )
+                    document.querySelectorAll('.logout-spinner').forEach(el => el.classList.add('d-none')  )
+                    document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = false  )
+                    window.location.href = './login.html'
+                }, 3000);
+                
+            }
+        });    
+    }
+})
 
 
 
-    //rating distribution 
+//rating distribution 
 
-    async function calculateDistribution(){
+async function calculateDistribution(){
+    try{
         let feedbackData = await fetch(FEEDBACKAPI) 
         let feedbacks = await feedbackData.json() 
         let five = 0 
@@ -261,32 +304,49 @@
         document.querySelector('.administrationWidth').textContent = `${(administration / administrationCount).toFixed(1)} ★`;
         document.querySelector('.overallWidth').textContent = `${((health + infrastructure + lawAndOrder + administration) / n).toFixed(1)} ★`;
     }
+    catch(error){
+        console.log(error); 
+        toastr.error('Something went Wrong')
+        
+    }
+}
 
-    calculateDistribution()
-
-
-    //dynamic filtering 
-
-    //view 
-
-    let pendingView = document.getElementById('pendingView') 
-    pendingView.addEventListener('click' , function(){
-        localStorage.setItem('status' , 'Pending') 
-        window.location.href = './adminfeedback.html'
-    })
+calculateDistribution()
 
 
-    let respondedView = document.getElementById('respondedView') 
-    respondedView.addEventListener('click' , function(){
-        localStorage.setItem('status' , 'Responded') 
-        window.location.href = './adminfeedback.html'
-    })
+//dynamic filtering 
 
-    let averageRatingView = document.getElementById('averageRatingView') 
-    averageRatingView.addEventListener('click' , function(){
-        let rating = document.getElementById('averageRating')
-        localStorage.setItem('rating' , rating.textContent)
-        window.location.href = './adminfeedback.html'
-    })
+//view 
+
+let pendingView = document.getElementById('pendingView') 
+pendingView.addEventListener('click' , function(){
+    localStorage.setItem('status' , 'Pending') 
+    window.location.href = './adminfeedback.html'
+})
 
 
+let respondedView = document.getElementById('respondedView') 
+respondedView.addEventListener('click' , function(){
+    localStorage.setItem('status' , 'Responded') 
+    window.location.href = './adminfeedback.html'
+})
+
+let averageRatingView = document.getElementById('averageRatingView') 
+averageRatingView.addEventListener('click' , function(){
+    let rating = document.getElementById('averageRating')
+    localStorage.setItem('rating' , rating.textContent)
+    window.location.href = './adminfeedback.html'
+})
+
+
+if(localStorage.getItem('showToast')) {
+    const toastElement = document.getElementById("welcomeToast");
+
+    const toast = new bootstrap.Toast(toastElement, {
+        autohide: true,
+        delay: 4000
+    });
+
+    toast.show();
+    localStorage.removeItem('showToast')
+}

@@ -41,3 +41,8 @@ i{
     background-color: #C4B5FD !important;
     color: #4C1D95 !important;
 }
+
+i.rating-star{
+    cursor: pointer;
+    transition: 0.3s;
+}

@@ -1,0 +1,342 @@
+--CREATING USER
+
+CREATE TABLE USERS(
+	 id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(), 
+	userName VARCHAR(30), 
+	email VARCHAR(50) , 
+	password VARCHAR(30) , 
+	role VARCHAR(10) DEFAULT 'USER' , 
+	createdOn DATETIME DEFAULT GETDATE(), 
+	phone CHAR(10) DEFAULT 'NA' , 
+	status VARCHAR(10) DEFAULT 'ACTIVE' 
+)
+
+
+--CREATING FEEDBACK 
+
+CREATE TABLE feedbacks (
+	id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID() , 
+	userId UNIQUEIDENTIFIER  FOREIGN KEY REFERENCES USERS(id) , 
+	userName VARCHAR(30) , 
+	email VARCHAR(50) , 
+	title VARCHAR(50) , 
+	department VARCHAR(20) , 
+	feedback VARCHAR(100) , 
+	rating CHAR(1) , 
+	createdOn DATETIME DEFAULT GETDATE(), 
+	response VARCHAR(100) DEFAULT '-', 
+	respondedOn DATETIME DEFAULT DEFAULT NULL , 
+	status VARCHAR(10) DEFAULT 'PENDING', 
+	updatedOn DATETIME
+)
+
+--ACCOUNT CREATION 
+INSERT INTO 
+USERS (userName , email , password ) 
+VALUES 
+('NAME','EMAIL','PASSWORD')
+
+
+--LOGIN 
+
+DECLARE @email VARCHAR(50) = 'sample@gmail.com' 
+DECLARE @password VARCHAR(50) = 'Sample@1234' 
+DECLARE @role varchar(10) = 'User'
+
+SELECT * 
+FROM USERS 
+WHERE email = @email AND password = @password AND role = @role AND status = 'Active'
+
+
+
+--statistics fetching in users dashboard
+
+DECLARE @USERID UNIQUEIDENTIFIER = 'sample' 
+SELECT COUNT(*) AS TotalFeedback 
+FROM feedbacks 
+WHERE userId = @USERID 
+
+SELECT COUNT(*) AS TotalResponded 
+FROM feedbacks 
+WHERE userId = @USERID AND status = 'Responded' 
+
+SELECT AVG(CAST(rating AS INT)) AS AverageRating 
+FROM feedbacks 
+WHERE userId = @USERID 
+
+SELECT CAST (COUNT(CASE WHEN status = 'Resoponded' THEN 1 ELSE 0 END) * 100 / COUNT(*) AS decimal(10,2)) AS ResponseRate
+FROM feedbacks 
+WHERE userId = @USERID AND status = 'Responded' 
+
+
+--ANOTHER WAY TO FIND THE RESPONSE RATE 
+SELECT (
+SELECT COUNT(*) 
+FROM feedbacks 
+WHERE userId = @USERID  AND status = 'Responded'
+) * 100 
+/
+(
+SELECT COUNT(*) 
+FROM feedbacks 
+WHERE userId = @USERID 
+) AS ResponseRate
+
+
+--GIVING FEEDBACK 
+INSERT INTO feedbacks (title , department , feedback , rating ) 
+VALUES 
+('TITLE' , 'DEPARTMENT' ,'FEEDBACK' , '4'  )
+
+
+
+--USER DASHBOARD FEEDBACKS FILTERING 
+
+--RATING FILTER 
+DECLARE @RATING INT = 3 
+
+IF (@RATING != 'ALL') 
+BEGIN 
+	SELECT * 
+	FROM feedbacks 
+	WHERE rating >= @RATING 
+END 
+
+ELSE 
+BEGIN 
+	SELECT * FROM feedbacks 
+END 
+
+
+
+--DEPARTMENT FILTER
+
+DECLARE @DEPARTMENT VARCHAR(30)  = 'HEALTH CARE'
+
+IF (@DEPARTMENT != 'ALL') 
+BEGIN 
+	SELECT * 
+	FROM feedbacks 
+	WHERE department = @DEPARTMENT AND userId = @USERID
+END 
+
+ELSE 
+BEGIN 
+	SELECT * FROM feedbacks 
+END 
+
+
+
+--DEPARTMENT FILTER
+
+DECLARE @STATUS VARCHAR(20) = 'PENDING'
+
+IF (@STATUS != 'ALL') 
+BEGIN 
+	SELECT * 
+	FROM feedbacks 
+	WHERE status = @STATUS  AND userId = @USERID 
+END 
+
+ELSE 
+BEGIN 
+	SELECT * FROM feedbacks
+END 
+
+
+--SEARCH 
+DECLARE @SEARCH VARCHAR(30) = 'SAMPLE'
+SELECT * 
+FROM feedbacks 
+WHERE title LIKE '%' + @SEARCH + '%' AND userId = @USERID
+
+
+
+--PAGINATION 
+DECLARE @ITEMS INT = 10 
+DECLARE @CURRENTPAGE INT = 2 
+
+DECLARE @SKIP INT = (@CURRENTPAGE - 1 ) * @ITEMS  
+
+SELECT * FROM feedbacks 
+WHERE userId = @USERID 
+ORDER BY createdOn DESC
+OFFSET @SKIP ROWS 
+FETCH NEXT @ITEMS ROWS ONLY 
+
+
+
+--ADMIN FEEDBACKS 
+
+SELECT COUNT(*) AS TotalFeedback
+FROM feedbacks
+
+SELECT COUNT(*) AS TotalPending 
+FROM feedbacks
+WHERE status = 'Pending' 
+
+SELECT COUNT(*) AS TotalResponded 
+FROM feedbacks 
+WHERE status = 'Responded' 
+
+
+SELECT CAST(AVG(CAST(rating AS INT)) AS DECIMAL(1,1)) AS AverageRating
+FROM feedbacks
+
+
+
+--DISPLAYING RECENT FEEDBACKS 
+
+SELECT * FROM feedbacks  
+ORDER BY createdOn DESC
+OFFSET 0 ROWS  
+FETCH NEXT 5 ROWS ONLY 
+
+
+
+
+--ADMIN DASHBOARD FEEDBACKS FILTERING 
+
+--RATING FILTER 
+DECLARE @RATING2 INT = 3 
+
+IF (@RATING2 != 'ALL') 
+BEGIN 
+	SELECT * 
+	FROM feedbacks 
+	WHERE rating >= @RATING2 
+END 
+
+ELSE 
+BEGIN 
+	SELECT * FROM feedbacks 
+END 
+
+
+
+--DEPARTMENT FILTER
+
+DECLARE @DEPARTMENT2 VARCHAR(30) = 'HEALTH CARE'
+
+IF (@DEPARTMENT2 != 'ALL') 
+BEGIN 
+	SELECT * 
+	FROM feedbacks 
+	WHERE department = @DEPARTMENT2 
+END 
+
+ELSE 
+BEGIN 
+	SELECT * FROM feedbacks 
+END 
+
+
+
+--DEPARTMENT FILTER
+
+DECLARE @STATUS2 VARCHAR(20) = 'PENDING'
+
+IF (@STATUS2 != 'ALL') 
+BEGIN 
+	SELECT * 
+	FROM feedbacks 
+	WHERE status = @STATUS2 
+END 
+
+ELSE 
+BEGIN 
+	SELECT * FROM feedbacks 
+END 
+
+
+--SEARCH 
+DECLARE @SEARCH2 VARCHAR(30) = 'SAMPLE'
+SELECT * 
+FROM feedbacks 
+WHERE title LIKE '%' + @SEARCH2 + '%' 
+
+
+
+
+--ADMIN DASHBOARD USERS PAGE FILTERING 
+
+
+--ROLE FILTERING
+DECLARE @USERROLE VARCHAR(10) = 'User' 
+
+IF(@USERROLE != 'ALL') 
+BEGIN 
+	SELECT * FROM USERS 
+	WHERE role = @USERROLE 
+END 
+
+ELSE
+BEGIN 
+	SELECT * FROM USERS 
+END 
+
+
+--STATUS FILTERING
+DECLARE @USERSTATUS VARCHAR(20) = 'Active' 
+
+IF(@USERSTATUS != 'ALL') 
+BEGIN 
+	SELECT * FROM USERS 
+	WHERE status = @USERSTATUS 
+END 
+
+ELSE
+BEGIN 
+	SELECT * FROM USERS 
+END 
+
+
+--SERACH BY NAME 
+
+DECLARE @INPUTNAME VARCHAR(30)  = 'SAMPLE' 
+
+SELECT * 
+FROM USERS 
+WHERE userName LIKE '%' + @INPUTNAME + '%'
+
+
+
+--VIEWING THE FEEDBACK 
+DECLARE @FEEDBACKID UNIQUEIDENTIFIER = 'SAMPLE' 
+
+SELECT * FROM feedbacks
+
+SELECT userName , email  , title , feedback , rating , status , response 
+FROM feedbacks
+WHERE id = @FEEDBACKID  
+
+--UPDATING THE FEEDBACK 
+
+UPDATE feedbacks 
+SET response = 'RESPONSE' , respondedOn = GETDATE() ,  status = 'ROLE'
+
+
+--UPDATING THE USER 
+DECLARE @UPDATEDNAME VARCHAR(20) = 'UPDATED' 
+DECLARE @UPDATEDEMAIL VARCHAR(50) = 'UPDATED' 
+DECLARE @UPDATEDROLE VARCHAR(10) = 'UPDATED' 
+
+UPDATE USERS 
+SET userName = @UPDATEDNAME , email = @UPDATEDNAME , role = @UPDATEDROLE 
+WHERE id = @USERID 
+
+
+--DELETING USER (SOFT DELETE)
+
+UPDATE USERS 
+SET status = 'IN ACTIVE' 
+WHERE id = @USERID 
+
+--RESTORING USER 
+UPDATE USERS 
+SET status = 'ACTIVE' 
+WHERE id = @USERID 
+
+
+
+

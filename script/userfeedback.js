@@ -1,6 +1,14 @@
 import { USERSAPI , FEEDBACKAPI } from './api.js';  
 
 
+//toaster
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    timeOut: 3000
+};
+
 //
 let finalFeedbacks = [] 
 //user
@@ -9,34 +17,37 @@ let user = JSON.parse(localStorage.getItem('user'))
 //dynamic filtering 
 let userStatus = localStorage.getItem('status') || 'All' 
 let userRating = Number(localStorage.getItem('rating')) || 'All';
-console.log(userRating);
 
 async function dynamicFiltering(){
-    let feedbackData = await fetch(`${FEEDBACKAPI}?userId=${user.id}`) 
-    let feedbacks = await feedbackData.json() 
-    if(userStatus != 'All') {
-        feedbacks = feedbacks.filter(feedback => feedback.status == userStatus) 
-    }
-    if(userRating != 'All') {
-        feedbacks  = feedbacks.filter(feedback => {
-            if(userRating == 1) {
-                return feedback.rating == 1 
-            }
-            else{
-                return feedback.rating >= userRating
-            }
-        })
-    }
+    try{
+        let feedbackData = await fetch(`${FEEDBACKAPI}?userId=${user.id}`) 
+        let feedbacks = await feedbackData.json() 
+        if(userStatus != 'All') {
+            feedbacks = feedbacks.filter(feedback => feedback.status == userStatus) 
+        }
+        if(userRating != 'All') {
+            feedbacks  = feedbacks.filter(feedback => {
+                if(userRating == 1) {
+                    return feedback.rating == 1 
+                }
+                else{
+                    return feedback.rating >= userRating
+                }
+            })
+        }
 
-    document.getElementById('statusFilter').value = userStatus 
-    console.log(typeof(userRating));
-    
-    document.getElementById('ratingFilter').value = userRating
-    finalFeedbacks = feedbacks 
-    currentPage = 1 
-    showPage(finalFeedbacks)
-    localStorage.removeItem('status')
-    localStorage.removeItem('rating')
+        document.getElementById('statusFilter').value = userStatus 
+        
+        document.getElementById('ratingFilter').value = userRating
+        finalFeedbacks = feedbacks 
+        currentPage = 1 
+        showPage(finalFeedbacks)
+        localStorage.removeItem('status')
+        localStorage.removeItem('rating')
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 
@@ -69,7 +80,6 @@ function createFeedback(feedbacks){
         for(let i = 1 ; i<= n ; i++){
             stars += '⭐'
         }
-        console.log(stars);
         
         let responseDate = new Date(feedback.respondedOn)
         body.innerHTML += `
@@ -83,13 +93,15 @@ function createFeedback(feedbacks){
             <td>${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}</td>
             <td class = 'text-center'>
             ${feedback.respondedOn? `${responseDate.getDate()}-${responseDate.getMonth()}-${responseDate.getFullYear()}`
-                  :'-'}</td> 
+                :'-'}</td> 
             <td class = 'text-center'>${feedback.response || '-'}</td>
             <td class='text-center' >
             <i class="bi bi-pencil-square fs-5  ${feedback.status == 'Pending' ? 'active editFeedbackIcon' : 'blocked'}" 
             ${feedback.status=='Pending' ? ` data-bs-toggle="modal" data-bs-target="#editFeedbackModal" 
                 data-id = ${feedback.id}  ` : ''}
             ></i>
+            <i class="bi bi-trash3 fs-5 ms-2  
+            ${feedback.status =='Pending' ? 'text-danger deleteFeedbackIcon':'blocked text'} " data-id = ${feedback.id}></i>
             </td>
             
         </tr>
@@ -101,15 +113,20 @@ function createFeedback(feedbacks){
 //displaying feedbacks 
 
 async function displayFeedback(){
-    let feedbackData = await fetch(FEEDBACKAPI) 
-    let feedbacks = await feedbackData.json() 
-    let userFeedbacks = feedbacks.filter(feedback => feedback.userId == user.id)
-    userFeedbacks.sort((a,b)=>{
-        return new Date(b.createdOn) - new Date(a.createdOn) 
-    })
-    finalFeedbacks = userFeedbacks 
-    currentPage = 1 
-    showPage(finalFeedbacks)
+    try{
+        let feedbackData = await fetch(FEEDBACKAPI) 
+        let feedbacks = await feedbackData.json() 
+        let userFeedbacks = feedbacks.filter(feedback => feedback.userId == user.id)
+        userFeedbacks.sort((a,b)=>{
+            return new Date(b.createdOn) - new Date(a.createdOn) 
+        })
+        finalFeedbacks = userFeedbacks 
+        currentPage = 1 
+        showPage(finalFeedbacks)
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 if(localStorage.getItem('status')){
@@ -202,22 +219,68 @@ let currentId = ''
 let editTitle = document.getElementById('editTitle') 
 let editDepartment = document.getElementById('editDepartment') 
 let editFeedback = document.getElementById('editFeedback')
-let editRating = document.getElementById('editRating') 
 
 
 document.addEventListener('click' , async  function(event){
     if(event.target.classList.contains('editFeedbackIcon')){
-        currentId = event.target.dataset.id         
+        try{
+            currentId = event.target.dataset.id         
         
-        let feedbackData = await fetch(`${FEEDBACKAPI}?id=${currentId}`) 
-        let feedback = await feedbackData.json() 
+            let feedbackData = await fetch(`${FEEDBACKAPI}?id=${currentId}`) 
+            let feedback = await feedbackData.json() 
 
-        let data = feedback[0] 
+            let data = feedback[0] 
+            editRatingValue = Number(data.rating);
+            document.querySelectorAll(".edit-rating-star").forEach(star => {
+                if (Number(star.dataset.value) <= editRatingValue) {
+                    star.classList.remove("bi-star");
+                    star.classList.add("bi-star-fill");
+                } else {
+                    star.classList.remove("bi-star-fill");
+                    star.classList.add("bi-star");
+                }
 
-        editTitle.value = data.title 
-        editDepartment.value = data.department 
-        editRating.value = data.rating  
-        editFeedback.value = data.feedback
+            });
+            editTitle.value = data.title 
+            editDepartment.value = data.department 
+            editFeedback.value = data.feedback
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    else if(event.target.classList.contains('deleteFeedbackIcon')) {
+        try{
+            let id = event.target.dataset.id 
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to Delete this Feedback ?",
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true, 
+                confirmButtonColor: "#d33", 
+                cancelButtonColor:"#3085d6",
+                confirmButtonText: "Yes, Delete!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await fetch(`${FEEDBACKAPI}/${id}` , {
+                        method:'DELETE' 
+                    })
+
+                    await filterFeedback()
+
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "The Feedback has been deleted",
+                        icon: "success"
+                    });
+                }
+            });   
+        }
+        catch(error){
+            console.log(error);
+        }
+        
     }
 })
 
@@ -225,42 +288,76 @@ document.addEventListener('click' , async  function(event){
 //Feedback Validation
 function validateFeedback(title , feedback , rating , department){
     if(!title || !feedback || !rating || !department ) {
-        alert('Fields cannot be empty') 
+        toastr.warning('Fields cannot be empty') 
         return false 
     }
     return true 
 }
 
+//rating
+let editRatingValue = 0;
+
+const editRatingContainer = document.getElementById("editRatingContainer");
+
+editRatingContainer.addEventListener("click", function (event) {
+
+    if (!event.target.classList.contains("edit-rating-star")) return;
+
+    editRatingValue = Number(event.target.dataset.value);
+
+    document.querySelectorAll(".edit-rating-star").forEach(star => {
+
+        if (Number(star.dataset.value) <= editRatingValue) {
+            star.classList.remove("bi-star");
+            star.classList.add("bi-star-fill", "text-warning");
+        } else {
+            star.classList.remove("bi-star-fill", "text-warning");
+            star.classList.add("bi-star");
+        }
+
+    });
+
+});
+
+
 //saving edited feedback 
 let saveBtn = document.getElementById('saveBtn') 
 saveBtn.addEventListener('click' , async function(){
-    let isValid = validateFeedback(editTitle.value , editFeedback.value , editRating.value , editDepartment.value) 
+    try{
+        let isValid = validateFeedback(editTitle.value , editFeedback.value , editRatingValue , editDepartment.value) 
 
-    if(isValid) {
-        let editedFeedback = {
-            title:editTitle.value , 
-            department:editDepartment.value , 
-            rating:editRating.value , 
-            feedback:editFeedback.value , 
-            updatedOn:new Date().toISOString()
+        if(isValid) {
+            let editedFeedback = {
+                title:editTitle.value , 
+                department:editDepartment.value , 
+                rating:editRatingValue , 
+                feedback:editFeedback.value , 
+                updatedOn:new Date().toISOString()
+            }
+            toastr.success('Feedback Edited')
+            await fetch(`${FEEDBACKAPI}/${currentId}` , {
+                method:"PATCH" , 
+                headers : {
+                    'Content-type' : 'application/json'
+                } , 
+                body:JSON.stringify(editedFeedback)
+            })
         }
+        else{
+            return 
+        }
+        await filterFeedback()
 
-        await fetch(`${FEEDBACKAPI}/${currentId}` , {
-            method:"PATCH" , 
-            headers : {
-                'Content-type' : 'application/json'
-            } , 
-            body:JSON.stringify(editedFeedback)
-        })
+
+
+        //closing the modal 
+        let modalElement = document.getElementById('editFeedbackModal') 
+        let modal = bootstrap.Modal.getInstance(modalElement) 
+        modal.hide()
     }
-    await filterFeedback()
-
-
-
-    //closing the modal 
-    let modalElement = document.getElementById('editFeedbackModal') 
-    let modal = bootstrap.Modal.getInstance(modalElement) 
-    modal.hide()
+    catch(error){
+        console.log(error);
+    }
     
 })
 
@@ -327,34 +424,35 @@ pagination.addEventListener('click' , function(event){
 let logoutBtn = document.getElementById('logoutBtn') 
 logoutBtn.addEventListener('click' , async function(){
     Swal.fire({
-                title: "Are you sure?",
-                text: "Do you want Logout ?",
-                icon: "warning",
-                showCancelButton: true,
-                reverseButtons: true, 
-                confirmButtonColor: "#d33", 
-                cancelButtonColor:"#3085d6",
-                confirmButtonText: "Yes, Logout!"
-            }).then( (result) => {
-                if (result.isConfirmed) {
-                    document.querySelector('.logout-text').classList.add('d-none') 
-                    document.querySelector('.logout-spinner').classList.remove('d-none') 
-                    logoutBtn.disabled = true  
-                    localStorage.removeItem('user')
-                    setTimeout(() => {
-                        Swal.fire({
-                        title: "Logged Out!",
-                        text: "The user has been logged out.",
-                        icon: "success"
-                    });
-                    }, 1000);
+        title: "Are you sure?",
+        text: "Do you want Logout ?",
+        icon: "warning",
+        showCancelButton: true,
+        reverseButtons: true, 
+        confirmButtonColor: "#d33", 
+        cancelButtonColor:"#3085d6",
+        confirmButtonText: "Yes, Logout!"
+    }).then( (result) => {
+        if (result.isConfirmed) {
+            document.querySelector('.logout-text').classList.add('d-none') 
+            document.querySelector('.logout-spinner').classList.remove('d-none') 
+            logoutBtn.disabled = true  
+            localStorage.removeItem('user')
+            localStorage.removeItem('theme')
+            setTimeout(() => {
+                Swal.fire({
+                title: "Logged Out!",
+                text: "The user has been logged out.",
+                icon: "success"
+            });
+            }, 1000);
 
-                    setTimeout(() => {
-                        document.querySelector('.logout-text').classList.remove('d-none') 
-                        document.querySelector('.logout-spinner').classList.add('d-none') 
-                        logoutBtn.disabled = false
-                        window.location.href = './login.html'
-                    }, 2000);
+            setTimeout(() => {
+                document.querySelector('.logout-text').classList.remove('d-none') 
+                document.querySelector('.logout-spinner').classList.add('d-none') 
+                logoutBtn.disabled = false
+                window.location.href = './login.html'
+            }, 2000);
                     
                     
                 }

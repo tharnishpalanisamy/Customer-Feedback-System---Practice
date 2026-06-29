@@ -1,23 +1,37 @@
 import { USERSAPI , FEEDBACKAPI } from "./api.js";
 
 
+
+//toaster
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    timeOut: 3000
+};
+
 //getting the user 
 let user = JSON.parse(localStorage.getItem('user')) || ''
 //loading the details 
 
 async function loadDetails(){
-    let userData = await fetch(`${USERSAPI}/${user.id}`)
-    let currentUser = await userData.json()
-    document.querySelector('.userName').innerText = currentUser.name 
-    document.querySelector('.role').innerText = currentUser.role 
-    document.querySelector('.userRole').innerText = currentUser.role 
-    document.querySelector('.fullName').innerText = currentUser.name 
-    document.querySelector('.email').innerText = currentUser.email 
-    document.querySelector('.phone').innerText = `${currentUser.phone ? `+91 ${currentUser.phone}` : 'NA'}`
-    let date = new Date(currentUser.createdOn)
-    document.querySelector('.joinedDate').innerText = ` ${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}
-    `
-    document.querySelector('.userStatus').innerText = currentUser.status 
+    try{
+        let userData = await fetch(`${USERSAPI}/${user.id}`)
+        let currentUser = await userData.json()
+        document.querySelector('.userName').innerText = currentUser.name 
+        document.querySelector('.role').innerText = currentUser.role 
+        document.querySelector('.userRole').innerText = currentUser.role 
+        document.querySelector('.fullName').innerText = currentUser.name 
+        document.querySelector('.email').innerText = currentUser.email 
+        document.querySelector('.phone').innerText = `${currentUser.phone ? `+91 ${currentUser.phone}` : 'NA'}`
+        let date = new Date(currentUser.createdOn)
+        document.querySelector('.joinedDate').innerText = ` ${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}
+        `
+        document.querySelector('.userStatus').innerText = currentUser.status 
+    }
+    catch(error){
+        console.log(error);
+    }
 
 }
 
@@ -27,26 +41,31 @@ loadDetails()
 //loading the statistics 
 
 async function fetchStatistics(){
-    let feedbackData = await fetch(`${FEEDBACKAPI}?userId=${user.id}`)
-    let feedbacks = await feedbackData.json() 
-    let rating = 0 
-    let pending = 0 
-    let responded = 0 
+    try{
+        let feedbackData = await fetch(`${FEEDBACKAPI}?userId=${user.id}`)
+        let feedbacks = await feedbackData.json() 
+        let rating = 0 
+        let pending = 0 
+        let responded = 0 
 
-    feedbacks.forEach(feedback => {
-        rating += Number(feedback.rating)
-        if(feedback.status == 'Pending') {
-            pending ++
-        }
-        else if(feedback.status == 'Responded') {
-            responded ++
-        }
-    })
+        feedbacks.forEach(feedback => {
+            rating += Number(feedback.rating)
+            if(feedback.status == 'Pending') {
+                pending ++
+            }
+            else if(feedback.status == 'Responded') {
+                responded ++
+            }
+        })
 
-    document.querySelector('.totalFeedback').innerText = feedbacks.length 
-    document.querySelector('.averageRating').innerHTML = `${(rating /feedbacks.length).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>`
-    document.querySelector('.pending').innerText = pending 
-    document.querySelector('.responded').innerText = responded
+        document.querySelector('.totalFeedback').innerText = feedbacks.length 
+        document.querySelector('.averageRating').innerHTML = `${(rating /feedbacks.length).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>`
+        document.querySelector('.pending').innerText = pending 
+        document.querySelector('.responded').innerText = responded
+    }
+    catch(error){
+        console.log(error);
+    }
 
 }
 
@@ -54,74 +73,76 @@ fetchStatistics()
 
 
 //loading values in the modal 
+async function loadUserDetails(){
+    let editName = document.getElementById('editName') 
+    let editEmail = document.getElementById('editEmail') 
+    let editPhone = document.getElementById('editPhone') 
 
-let editName = document.getElementById('editName') 
-let editEmail = document.getElementById('editEmail') 
-let editPhone = document.getElementById('editPhone') 
+    let userData = await fetch(`${USERSAPI}/${user.id}`) 
+    let data = await userData.json() 
+    editName.value = data.name 
+    editEmail.value = data.email 
+    editPhone.value = data.phone
 
-editName.value = user.name 
-editEmail.value = user.email 
-editPhone.value = user.phone
-
-
+}
+loadUserDetails()
 
 //saving edit 
 let saveBtn = document.getElementById('saveBtn') 
 saveBtn.addEventListener('click' , async function(){
-    let newName = editName.value 
-    let newEmail = editEmail.value 
-    let newPhone = editPhone.value 
+    try{
+        let newName = editName.value 
+        let newEmail = editEmail.value 
+        let newPhone = editPhone.value 
 
 
-    if(!newName || !newEmail || !newPhone) {
-        alert("VALUES CANNOT BE EMPTY")
-        return 
-    }
+        if(!newName || !newEmail || !newPhone) {
+            toastr.warning("VALUES CANNOT BE EMPTY")
+            return 
+        }
 
-    let nameRegex = /^[a-zA-Z ]{3,}$/ 
-    let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/  
-    let phoneRegex = /^\d{10}$/
+        let nameRegex = /^[a-zA-Z ]{3,}$/ 
+        let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/  
+        let phoneRegex = /^\d{10}$/
 
-    if(!nameRegex.test(newName)){
-        alert('Name should only have letters and spaces') ; 
-        return false ; 
-    }
-    if(!emailRegex.test(newEmail)){
-        alert('email format is wrong') ; 
-        return false ; 
-    }
-    if(!phoneRegex.test(newPhone) ) {
-        alert('Phone number should be 10 digits ')
-        return ; 
-    }
+        if(!nameRegex.test(newName)){
+            toastr.warning('Name should only have letters and spaces') ; 
+            return false ; 
+        }
+        if(!emailRegex.test(newEmail)){
+            toastr.warning('email format is wrong') ; 
+            return false ; 
+        }
+        if(!phoneRegex.test(newPhone) ) {
+            toastr.warning('Phone number should be 10 digits ')
+            return ; 
+        }
 
 
 
-    await fetch(`${USERSAPI}/${user.id}` , {
-        method:"PATCH" , 
-        headers : {
-            'Content-type' : 'application/json'
-        } , 
-        body: JSON.stringify({
-            name : newName , 
-            email : newEmail , 
-            phone : newPhone 
+        await fetch(`${USERSAPI}/${user.id}` , {
+            method:"PATCH" , 
+            headers : {
+                'Content-type' : 'application/json'
+            } , 
+            body: JSON.stringify({
+                name : newName , 
+                email : newEmail , 
+                phone : newPhone 
+            })
+
         })
 
-    })
+        loadDetails()
 
-    loadDetails()
-
-
-
-
-
-
-
-    //dismissing the modal 
-    let modalElement = document.getElementById('editUserModal') 
-    let modal = bootstrap.Modal.getInstance(modalElement)
-    modal.hide()
+        //dismissing the modal 
+        let modalElement = document.getElementById('editUserModal') 
+        let modal = bootstrap.Modal.getInstance(modalElement)
+        modal.hide()
+    }
+    catch(error){
+        console.log(error);
+    }
 })
 
 
@@ -145,6 +166,7 @@ logoutBtn.addEventListener('click' , async function(){
                     document.querySelector('.logout-spinner').classList.remove('d-none') 
                     logoutBtn.disabled = true  
                     localStorage.removeItem('user')
+                    localStorage.removeItem('theme')
                     setTimeout(() => {
                         Swal.fire({
                         title: "Logged Out!",

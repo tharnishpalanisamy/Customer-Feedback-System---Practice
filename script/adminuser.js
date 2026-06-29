@@ -1,5 +1,13 @@
 import {USERSAPI} from './api.js'
 
+//toaster
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    timeOut: 3000
+};
+
 let filteredUsers = [] 
 //filtering logic 
 let roleFilter = document.getElementById('roleFilter') 
@@ -7,23 +15,28 @@ let statusFilter = document.getElementById('statusFilter')
 let searchName = document.getElementById('searchName')
 
 async function filterusers(){
-    let usersData = await fetch(USERSAPI)
-    let users = await usersData.json()
+    try{
+        let usersData = await fetch(USERSAPI)
+        let users = await usersData.json()
 
-    if(roleFilter.value != 'All') {
-        users = users.filter(user=>user.role == roleFilter.value ) 
-    }
+        if(roleFilter.value != 'All') {
+            users = users.filter(user=>user.role == roleFilter.value ) 
+        }
 
-    if(statusFilter.value != 'All') {
-        users = users.filter(user=>user.status == statusFilter.value )
-    }
+        if(statusFilter.value != 'All') {
+            users = users.filter(user=>user.status == statusFilter.value )
+        }
 
-    if(searchName.value != '') {
-        users = users.filter(user => user.name.toLowerCase().includes(searchName.value))
+        if(searchName.value != '') {
+            users = users.filter(user => user.name.toLowerCase().includes(searchName.value))
+        }
+        filteredUsers = users
+        currentPage = 1 
+        showPage(filteredUsers)
     }
-    filteredUsers = users
-    currentPage = 1 
-    showPage(filteredUsers)
+    catch(error){
+        console.log(error);
+    }
 }
 
 roleFilter.addEventListener('click' , filterusers) 
@@ -72,11 +85,16 @@ function createuser(users){
 }
 
 async function displayuser(){
-    let usersData = await fetch(USERSAPI)
-    let users = await usersData.json() 
-    filteredUsers = users
-    currentPage = 1 
-    showPage(filteredUsers)
+    try{
+        let usersData = await fetch(USERSAPI)
+        let users = await usersData.json() 
+        filteredUsers = users
+        currentPage = 1 
+        showPage(filteredUsers)
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 displayuser()
 
@@ -191,12 +209,25 @@ document.addEventListener('click' , async function(event){
             }).then( (result) => {
                 if (result.isConfirmed) {
                     localStorage.removeItem('user')
-                    Swal.fire({
+                    localStorage.removeItem('theme')
+                    document.querySelectorAll('.logout-text').forEach(el => el.classList.add('d-none')  )
+                    document.querySelectorAll('.logout-spinner').forEach(el => el.classList.remove('d-none')  )
+                    document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = true  )
+                    
+                    setTimeout(() => {
+                        Swal.fire({
                         title: "Logged Out!",
                         text: "The user has been logged out.",
                         icon: "success"
+                    }, 1000);
                     });
-                    window.location.href = './login.html'
+                    setTimeout(() => {
+                        document.querySelectorAll('.logout-text').forEach(el => el.classList.remove('d-none')  )
+                        document.querySelectorAll('.logout-spinner').forEach(el => el.classList.add('d-none')  )
+                        document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = false  )
+                        window.location.href = './login.html'
+                    }, 3000);
+                    
                 }
             });    
         }
@@ -208,43 +239,49 @@ document.addEventListener('click' , async function(event){
 let saveBtn = document.getElementById('saveBtn') 
 saveBtn.addEventListener('click' , async function(){
 
-    if(!name.value || !email.value) {
-        alert('Enter the Values correctly') 
+    try{
+        if(!name.value || !email.value) {
+        toastr.warning('Values Cannot be Empty') 
         return ;
+        }
+
+        let nameRegex = /^[a-zA-Z ]{3,}$/ 
+        let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/  
+
+        if(!nameRegex.test(name.value)){
+            toastr.warning('Name should only have letters and spaces') ; 
+            return false ; 
+        }
+        if(!emailRegex.test(email.value)){
+            toastr.warning('email format is wrong') ; 
+            return false ; 
+        }
+
+        let editedUser = {
+            name : name.value , 
+            email : email.value , 
+            role : role.value 
+        }
+
+        toastr.success('User Updated successfully !')
+        await fetch(`${USERSAPI}/${currentUser}` , {
+            method:'PATCH' , 
+            headers:{
+                'Content-type' : 'application/json'
+            } , 
+            body:JSON.stringify(editedUser)
+        })
+
+        filterusers()
+
+        //closing the modal
+        let modalElement = document.getElementById('editUserModal') 
+        let modal = bootstrap.Modal.getInstance(modalElement) 
+        modal.hide()
     }
-
-    let nameRegex = /^[a-zA-Z ]{3,}$/ 
-    let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/  
-
-    if(!nameRegex.test(name.value)){
-        alert('Name should only have letters and spaces') ; 
-        return false ; 
+    catch(error){
+        console.log(error);
     }
-    if(!emailRegex.test(email.value)){
-        alert('email format is wrong') ; 
-        return false ; 
-    }
-
-    let editedUser = {
-        name : name.value , 
-        email : email.value , 
-        role : role.value 
-    }
-
-    await fetch(`${USERSAPI}/${currentUser}` , {
-        method:'PATCH' , 
-        headers:{
-            'Content-type' : 'application/json'
-        } , 
-        body:JSON.stringify(editedUser)
-    })
-
-    filterusers()
-
-    //closing the modal
-    let modalElement = document.getElementById('editUserModal') 
-    let modal = bootstrap.Modal.getInstance(modalElement) 
-    modal.hide()
 })
 
 
@@ -286,6 +323,9 @@ function showPage(users){
 
 //clicks 
 pagination.addEventListener('click' , async function(){
+    if(event.target.classList.contains('disabled')) {
+        return 
+    }
     if(event.target.dataset.type == 'previous') {
         if(currentPage > 1) {
             currentPage --

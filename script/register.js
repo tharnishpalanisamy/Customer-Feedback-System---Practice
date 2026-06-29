@@ -112,38 +112,51 @@ async function validate(name, email, password, confirmPassword) {
 let registerBtn = document.getElementById('registerBtn') 
 
 registerBtn.addEventListener('click' , async function(){
-    let name = document.getElementById('name')
-    let email = document.getElementById('email')
-    let password = document.getElementById('password')
-    let confirmPassword = document.getElementById('confirm-password')
+    try{
+        let name = document.getElementById('name')
+        let email = document.getElementById('email')
+        let password = document.getElementById('password')
+        let confirmPassword = document.getElementById('confirm-password')
 
-    if(await validate(name.value , email.value , password.value , confirmPassword.value) === true) {
-        let user = {
-            name:name.value , 
-            email:email.value , 
-            password:password.value ,
-            role:'User' , 
-            createdOn:new Date().toISOString() , 
-            phone : 'NA'
+        if(await validate(name.value , email.value , password.value , confirmPassword.value) === true) {
+            let user = {
+                name:name.value , 
+                email:email.value , 
+                password:password.value ,
+                role:'User' , 
+                createdOn:new Date().toISOString() , 
+                phone : 'NA'
+            }
+            document.querySelector('.register-text').classList.add('d-none')
+            document.querySelector('.register-spinner').classList.remove('d-none')
+            registerBtn.disabled = true 
+
+            await fetch(USERSAPI , {
+                method:"POST" , 
+                headers:{
+                    'Content-type' : 'application/json'
+                } , 
+                body:JSON.stringify(user)
+            })
+            
+            toastr.success('Account created')
+            setTimeout(() => {
+                document.querySelector('.register-text').classList.remove('d-none')
+                document.querySelector('.register-spinner').classList.add('d-none')
+                registerBtn.disabled = false 
+                window.location.href = './login.html';
+                name.value = '' 
+                email.value = '' 
+                password.value = '' 
+                confirmPassword.value = ''
+
+            }, 1200);
+
+            
         }
-
-        await fetch(USERSAPI , {
-            method:"POST" , 
-            headers:{
-                'Content-type' : 'application/json'
-            } , 
-            body:JSON.stringify(user)
-        })
-        
-        toastr.success('Account created')
-        setTimeout(() => {
-            window.location.href = './login.html';
-        }, 1200);
-
-        name.value = '' 
-        email.value = '' 
-        password.value = '' 
-        confirmPassword.value = ''
+    }
+    catch(error){
+        console.log(error);
     }
 })
 

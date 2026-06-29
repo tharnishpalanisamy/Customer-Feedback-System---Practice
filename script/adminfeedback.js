@@ -1,6 +1,16 @@
 import { FEEDBACKAPI } from "./api.js"; 
 
 
+
+//toaster
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    timeOut: 3000
+};
+
+
 let filteredFeedbacks = [] 
 
 //filter options
@@ -12,35 +22,41 @@ let ratingFilter = document.getElementById('ratingFilter')
 
 //dynamic filtering 
 async function dynamicFiltering(){
-    let feedbacksData = await fetch(FEEDBACKAPI) 
-    let feedbacks = await feedbacksData.json() 
-    let rating = localStorage.getItem('rating') || 'All' 
-    let department = localStorage.getItem('department') || 'All' 
-    let status = localStorage.getItem('status') || 'All' 
+    try{
+        let feedbacksData = await fetch(FEEDBACKAPI) 
+        let feedbacks = await feedbacksData.json() 
+        let rating = localStorage.getItem('rating') || 'All' 
+        let department = localStorage.getItem('department') || 'All' 
+        let status = localStorage.getItem('status') || 'All' 
 
-    if(rating != 'All') {
-        feedbacks = feedbacks.filter(feedback => Number(feedback.rating) >= Number(rating) ) 
+        if(rating != 'All') {
+            feedbacks = feedbacks.filter(feedback => Number(feedback.rating) >= Number(rating) ) 
+        }
+
+        if(department != 'All') {
+            feedbacks = feedbacks.filter(feedback => feedback.department == department )  
+        }
+
+        if(status != 'All') {
+            feedbacks = feedbacks.filter(feedback => feedback.status == status )  
+        }
+        departmentFilter.value = department 
+        statusFilter.value = status 
+        ratingFilter.value = Number(rating)  || 'All'
+        console.log(Number(rating));
+        
+        localStorage.removeItem('rating')
+        localStorage.removeItem('department')
+        localStorage.removeItem('status')
+
+
+        filteredFeedbacks = feedbacks 
+        currentPage = 1 
+        showPage(filteredFeedbacks)
     }
-
-    if(department != 'All') {
-        feedbacks = feedbacks.filter(feedback => feedback.department == department )  
+    catch(error){
+        console.log(error);    
     }
-
-    if(status != 'All') {
-        feedbacks = feedbacks.filter(feedback => feedback.status == status )  
-    }
-    departmentFilter.value = department 
-    statusFilter.value = status 
-    ratingFilter.value = Number(rating)  || 'All'
-    console.log(Number(rating));
-    
-    localStorage.removeItem('rating')
-    localStorage.removeItem('department')
-    localStorage.removeItem('status')
-
-
-    filteredFeedbacks = feedbacks 
-    createFeedback(feedbacks)
 
 }
 
@@ -99,13 +115,18 @@ function createFeedback(feedbacks){
 //displaying function 
 
 async function displayFeedback(){
-    let feedbacksData = await fetch(FEEDBACKAPI) 
-    let feedbacks = await feedbacksData.json()
-    
-    feedbacks.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn))
-    filteredFeedbacks = feedbacks;
-    currentPage = 1;
-    showPage(filteredFeedbacks);
+    try{
+        let feedbacksData = await fetch(FEEDBACKAPI) 
+        let feedbacks = await feedbacksData.json()
+        
+        feedbacks.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn))
+        filteredFeedbacks = feedbacks;
+        currentPage = 1;
+        showPage(filteredFeedbacks);
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 if(localStorage.getItem('department') || localStorage.getItem('status') || localStorage.getItem('rating')) {
@@ -166,14 +187,19 @@ document.addEventListener('click' , async function(event){
     //respond 
 
     else if (event.target.classList.contains('responseBtn')) {
-        currentFeedback = event.target.dataset.id 
+        try{
+            currentFeedback = event.target.dataset.id 
         
-        let feedbackData = await fetch(`${FEEDBACKAPI}/${currentFeedback}`) 
-        let data = await feedbackData.json() 
-        responseName.value = data.username
-        responseEmail.value = data.email 
-        responseFeedback.value = data.feedback 
-        responseRating.value = data.rating 
+            let feedbackData = await fetch(`${FEEDBACKAPI}/${currentFeedback}`) 
+            let data = await feedbackData.json() 
+            responseName.value = data.username
+            responseEmail.value = data.email 
+            responseFeedback.value = data.feedback 
+            responseRating.value = data.rating 
+        }
+        catch(error){
+            console.log(error);
+        }
         
     }
 
@@ -190,12 +216,25 @@ document.addEventListener('click' , async function(event){
             }).then( (result) => {
                 if (result.isConfirmed) {
                     localStorage.removeItem('user')
-                    Swal.fire({
+                    localStorage.removeItem('theme')
+                    document.querySelectorAll('.logout-text').forEach(el => el.classList.add('d-none')  )
+                    document.querySelectorAll('.logout-spinner').forEach(el => el.classList.remove('d-none')  )
+                    document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = true  )
+                    
+                    setTimeout(() => {
+                        Swal.fire({
                         title: "Logged Out!",
                         text: "The user has been logged out.",
                         icon: "success"
+                    }, 1000);
                     });
-                    window.location.href = './login.html'
+                    setTimeout(() => {
+                        document.querySelectorAll('.logout-text').forEach(el => el.classList.remove('d-none')  )
+                        document.querySelectorAll('.logout-spinner').forEach(el => el.classList.add('d-none')  )
+                        document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = false  )
+                        window.location.href = './login.html'
+                    }, 3000);
+                    
                 }
             });    
         }
@@ -207,10 +246,10 @@ document.addEventListener('click' , async function(event){
 let saveResponse = document.getElementById('saveResponse') 
 saveResponse.addEventListener('click' , async function(){
     if(!response.value) {
-        alert('Please add the response')
+        toastr.warning('Response cannot be empty!')
         return ; 
     }
-
+    toastr.success('Response added successfully!')
     await fetch(`${FEEDBACKAPI}/${currentFeedback}` , {
         method:'PATCH' , 
         headers:{
@@ -241,41 +280,46 @@ saveResponse.addEventListener('click' , async function(){
 
 
 async function filterFeedback(){
-    let dept = departmentFilter.value;
-    let status = statusFilter.value;
-    let value = searchTitle.value.toLowerCase();  
-    let rating = ratingFilter.value
+    try{
+        let dept = departmentFilter.value;
+        let status = statusFilter.value;
+        let value = searchTitle.value.toLowerCase();  
+        let rating = ratingFilter.value
 
-    let response = await fetch(`${FEEDBACKAPI}`);
-    let feedbacks = await response.json();
+        let response = await fetch(`${FEEDBACKAPI}`);
+        let feedbacks = await response.json();
 
-    if (dept !== 'All') {
-        feedbacks = feedbacks.filter(feedback => feedback.department === dept);
-    }
-
-    if (status !== 'All') {
-        feedbacks = feedbacks.filter(feedback => feedback.status === status);
-    }
-
-    if (value !== '') {
-        feedbacks = feedbacks.filter(feedback => feedback.title.toLowerCase().includes(value));
-    }
-    if(rating != 'All') {
-        rating = Number(rating) 
-        if(rating > 1) {
-        feedbacks = feedbacks.filter(feedback => Number(feedback.rating) >= rating)
+        if (dept !== 'All') {
+            feedbacks = feedbacks.filter(feedback => feedback.department === dept);
         }
-        else if(rating == 1 ){
-            feedbacks = feedbacks.filter(feedback => Number(feedback.rating) == rating)
-        }
-    }
 
-    feedbacks.sort((a,b) =>{
-        return new Date(b.createdOn) - new Date(a.createdOn)
-    })
-    filteredFeedbacks = feedbacks;
-    currentPage = 1;
-    showPage(filteredFeedbacks);
+        if (status !== 'All') {
+            feedbacks = feedbacks.filter(feedback => feedback.status === status);
+        }
+
+        if (value !== '') {
+            feedbacks = feedbacks.filter(feedback => feedback.title.toLowerCase().includes(value));
+        }
+        if(rating != 'All') {
+            rating = Number(rating) 
+            if(rating > 1) {
+            feedbacks = feedbacks.filter(feedback => Number(feedback.rating) >= rating)
+            }
+            else if(rating == 1 ){
+                feedbacks = feedbacks.filter(feedback => Number(feedback.rating) == rating)
+            }
+        }
+
+        feedbacks.sort((a,b) =>{
+            return new Date(b.createdOn) - new Date(a.createdOn)
+        })
+        filteredFeedbacks = feedbacks;
+        currentPage = 1;
+        showPage(filteredFeedbacks);
+    }
+    catch(error){
+        console.log(error);
+    }
 
 }
 

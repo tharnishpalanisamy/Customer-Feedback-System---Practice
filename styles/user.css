@@ -5,3 +5,8 @@
 a{
     cursor: pointer;
 }
+
+i.rating-star{
+    cursor: pointer;
+    transition: 0.3s;
+}
