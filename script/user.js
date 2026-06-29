@@ -40,7 +40,13 @@ async function displayStatistics(){
         document.querySelector('.feedbackCount').innerText = totalFeedback 
         document.querySelector('.responseCount').innerText = totalResponse 
         document.querySelector('.averageRating').innerText = Math.round(totalRating / totalFeedback) || 0 
-        document.querySelector('.responseRate').innerText = Math.round((totalResponse / totalFeedback ) * 100) + ' %' || 0 
+        if( Math.round((totalResponse / totalFeedback ) * 100)){
+            document.querySelector('.responseRate').innerText = Math.round((totalResponse / totalFeedback ) * 100).toFixed(1) + ' %' || 0 
+        }
+        else{
+            document.querySelector('.responseRate').innerText = '0%'
+        }
+        
     }
     catch(error){
         console.log(error);
@@ -119,6 +125,7 @@ saveFeedbackBtn.addEventListener('click' , async  function(){
         //closing the modal 
         title.value = '' 
         feedback.value = '' 
+        department.value = ''
         ratingValue = 0
         let stars = document.querySelectorAll('.rating-star') 
         stars.forEach(star => {

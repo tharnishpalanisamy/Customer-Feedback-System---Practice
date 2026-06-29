@@ -114,6 +114,8 @@ loginBtn.addEventListener('click', async function () {
     }
     catch(error){
         console.log(error);
+        removeSpinner();
+        toastr.error("Unable to connect to server.");
     }
 
 });

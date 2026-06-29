@@ -59,7 +59,13 @@ async function fetchStatistics(){
         })
 
         document.querySelector('.totalFeedback').innerText = feedbacks.length 
-        document.querySelector('.averageRating').innerHTML = `${(rating /feedbacks.length).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>`
+        document.querySelector('.averageRating').innerHTML = `${(rating /feedbacks.length).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>` 
+        if(rating /feedbacks.length){
+            document.querySelector('.averageRating').innerHTML = `${(rating /feedbacks.length).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>`
+        }
+        else{
+            document.querySelector('.averageRating').innerHTML = `0 <i class="bi bi-star-fill text-warning"></i>`
+        }
         document.querySelector('.pending').innerText = pending 
         document.querySelector('.responded').innerText = responded
     }
@@ -97,7 +103,7 @@ saveBtn.addEventListener('click' , async function(){
 
 
         if(!newName || !newEmail || !newPhone) {
-            toastr.warning("VALUES CANNOT BE EMPTY")
+            toastr.warning("Values cannot be empty!")
             return 
         }
 

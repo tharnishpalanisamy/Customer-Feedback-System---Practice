@@ -13,7 +13,7 @@
 body{
     background:
         linear-gradient(rgba(15,23,42,.7), rgba(15,23,42,.7)),
-        url("../assets/Images/bg.jpg") center center/cover no-repeat fixed;
+        url("../assets/Images/bg.png") center center/cover no-repeat fixed;
 }
 
 .box{

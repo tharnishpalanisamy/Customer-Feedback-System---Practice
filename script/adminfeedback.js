@@ -262,7 +262,7 @@ saveResponse.addEventListener('click' , async function(){
         })
     })
 
-    displayFeedback()
+    await filterFeedback()
     response.value = "";
     //dismiss the modal 
     let modalElement = document.getElementById('respondModal') 
@@ -342,6 +342,16 @@ let applyDate = document.getElementById('applyDate')
 applyDate.addEventListener('click' , async function(){
     if(!fromDate.value) {
         toastr.warning('Please enter the date from which you want to filter') 
+        return 
+    }
+    let from = new Date(fromDate.value) 
+    let to = toDate.value ? new Date(toDate.value) : new Date() 
+
+    from.setHours(0,0,0,0) 
+    to.setHours(23, 59, 59, 999) 
+
+    if(from >to) {
+        toastr.warning('From Date is greater than Today') 
         return 
     }
     document.querySelector('.dateFilterIcon').classList.remove('text')

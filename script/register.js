@@ -125,7 +125,8 @@ registerBtn.addEventListener('click' , async function(){
                 password:password.value ,
                 role:'User' , 
                 createdOn:new Date().toISOString() , 
-                phone : 'NA'
+                phone : 'NA', 
+                status : 'Active'
             }
             document.querySelector('.register-text').classList.add('d-none')
             document.querySelector('.register-spinner').classList.remove('d-none')
