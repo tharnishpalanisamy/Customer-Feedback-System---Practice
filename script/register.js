@@ -162,18 +162,108 @@ registerBtn.addEventListener('click' , async function(){
 })
 
 
-document.getElementById("name").addEventListener("input", function () {
-    this.classList.remove("is-invalid", "is-valid");
+//errors 
+let nameError = document.querySelector('.nameError')
+let emailError = document.querySelector('.emailError')
+let passwordError = document.querySelector('.passwordError')
+let confirmPasswordError = document.querySelector('.confirmPasswordError')
+
+
+let name = document.getElementById("name")
+let nameRegex = /^[a-zA-Z ]{3,}$/;
+let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*=-])[a-zA-Z0-9!@#$%^&*=-]{8,}$/;
+
+name.addEventListener("input", function () {
+    name.classList.remove("is-invalid", "is-valid"); 
+    nameError.innerHTML = ""
+    if(!name.value) {
+        nameError.innerHTML = 'Name Cannot be Empty'
+        name.classList.add('is-invalid')
+        return 
+    }
+    if(name.value.length < 3  ) {
+        nameError.innerHTML = 'Name should be atleast 3 characters long' 
+        name.classList.add('is-invalid')
+        return 
+    }
+    if(!nameRegex.test(name.value)) {
+        nameError.innerHTML = 'Name should only have letters and spaces'
+        name.classList.add('is-invalid')
+        return 
+    }
+    name.classList.add('is-valid')
+    
+
 });
 
-document.getElementById("email").addEventListener("input", function () {
-    this.classList.remove("is-invalid", "is-valid");
+let email = document.getElementById("email")
+email.addEventListener("input", async function () {
+    email.classList.remove("is-invalid", "is-valid");
+    emailError.classList.remove("text-success");
+    emailError.innerHTML = "";
+
+    if (!email.value.trim()) {
+        emailError.innerHTML = "Email cannot be empty.";
+        email.classList.add("is-invalid");
+        return;
+    }
+
+    if (!emailRegex.test(email.value.trim())) {
+        emailError.innerHTML = "Please enter a valid email address (e.g., name@example.com).";
+        email.classList.add("is-invalid");
+        return;
+    }
+
+    let response = await fetch(`${USERSAPI}?email=${encodeURIComponent(email.value.trim())}`);
+    let duplicateEmail = await response.json();
+
+    if (duplicateEmail.length > 0) {
+        emailError.innerHTML = "Email already exists.";
+        email.classList.add("is-invalid");
+        return;
+    }
+
+    emailError.innerHTML = "Valid email!";
+    emailError.classList.add("text-success");
+    email.classList.add("is-valid");
 });
 
-document.getElementById("password").addEventListener("input", function () {
-    this.classList.remove("is-invalid", "is-valid");
-});
+let password = document.getElementById("password")
+password.addEventListener("input", function () {
+    password.classList.remove("is-invalid", "is-valid"); 
+    passwordError.innerHTML = ""
+    if(!password.value) {
+        passwordError.innerHTML = "Password cannot be empty" 
+        password.classList.add('is-invalid') ; 
+        return 
+    }
 
-document.getElementById("confirm-password").addEventListener("input", function () {
-    this.classList.remove("is-invalid", "is-valid");
+    if(!passwordRegex.test(password.value)) {
+        passwordError.innerHTML = "Password must be 8-15 characters and include uppercase, lowercase, a number, and a special character." 
+        password.classList.add('is-invalid') ; 
+        return
+    }
+    passwordError.innerHTML = "" 
+    password.classList.add('is-valid') ; 
+
+});
+let confirmPassword = document.getElementById("confirm-password")
+confirmPassword.addEventListener("input", function () {
+    confirmPassword.classList.remove("is-invalid", "is-valid"); 
+
+    if(!confirmPassword.value) {
+        confirmPasswordError.innerHTML = 'This field cannot be empty' ; 
+        confirmPassword.classList.add('is-invalid')
+        return ; 
+    }
+
+    if (password.value != confirmPassword.value) {
+        confirmPasswordError.innerHTML = "Passwords Doesn't Match !" ; 
+        confirmPassword.classList.add('is-invalid')
+        return ; 
+    }
+
+    confirmPasswordError.innerHTML = '' ; 
+    confirmPassword.classList.add('is-valid')
 });
