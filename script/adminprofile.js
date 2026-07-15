@@ -121,7 +121,13 @@ saveBtn.addEventListener('click' , async function(){
             toastr.warning('Phone number should be 10 digits ')
             return ; 
         }
+        let emailsData = await fetch(`${USERSAPI}?email=${newEmail}`) 
+        let duplicateEmail = await emailsData.json()  
 
+        if(duplicateEmail.length >= 1) {
+            toastr.error("Email already exists") 
+            return 
+        }
 
         await fetch(`${USERSAPI}/${user.id}` , {
             method:"PATCH" , 
