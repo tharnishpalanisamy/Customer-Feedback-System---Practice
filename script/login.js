@@ -104,7 +104,7 @@ loginBtn.addEventListener('click', async function () {
         else {
             removeSpinner()
             toastr.error('User not found! Please create an account');
-
+            emailError.innerHTML = 'User not found !'
             email.classList.remove("is-valid");
             password.classList.remove("is-valid");
 
@@ -119,10 +119,34 @@ loginBtn.addEventListener('click', async function () {
     }
 
 });
+let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+let emailError = document.querySelector('.emailError')
 email.addEventListener("input", function () {
     email.classList.remove("is-invalid");
+    if(!email.value) {
+        emailError.innerHTML = 'Email cannot be empty' 
+        email.classList.add("is-invalid");
+        return 
+    }
+    if (!emailRegex.test(email.value.trim())) {
+        emailError.innerHTML = "Please enter a valid email address (e.g., name@example.com).";
+        email.classList.add("is-invalid");
+        return;
+    }
+    emailError.innerHTML = '' 
+    email.classList.add("is-valid");
 });
 
+let passwordError = document.querySelector('.passwordError')
 password.addEventListener("input", function () {
     password.classList.remove("is-invalid");
+    if(!password.value) {
+        passwordError.innerHTML = 'Password cannot be empty' ; 
+        password.classList.add("is-invalid");
+        return ; 
+
+    }
+    password.classList.remove("is-invalid");
+    passwordError.innerHTML =''
+
 });
