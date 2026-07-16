@@ -15,10 +15,10 @@
 
     <!--Nav barr-->
     <nav class="navbar navbar-expand-lg surface border-bottom sticky-top">
-        <div class="container-fluid">
+        <div class="container-fluid ">
             <button class="btn d-lg-none me-2" 
             data-bs-toggle = 'offcanvas' data-bs-target = '#mobileSidebar'>
-                <i class="bi bi-list fs-3"></i>
+                <i class="bi bi-list fs-3 text"></i>
             </button>
             <a href="#" class="navbar-brand fw-bold text">Admin Panel</a>
 
@@ -111,7 +111,7 @@
 
 
         <!--Contentt-->
-        <main class="main">
+        <main class="main container">
             <div class="mb-4">
                 <h2 class="fw-bold active">
                     Welcome Back Admin ,  
@@ -124,7 +124,7 @@
 
 
             <!--Cards-->
-            <div class="row g-4 mb-5">
+            <div class="row g-4 mb-5 justify-content-center ">
                 <div class="col-10 col-lg-3 col-md-6">
                     <div class="card stat-card shadow-sm">
                         <div class="card-body text">
@@ -196,8 +196,8 @@
 
 
             <!--Recent Feebdack--> 
-            <div class="row">
-                <div class="col-10 col-md-12">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-12">
                     <div class="card shadow-sm mb-5">
                         <div class="card-header bg-white">
                             <h5 class="mb-0">
@@ -227,7 +227,7 @@
             <!--Rating bar chart--> 
             <div class="container">
                 <div class="row gt-4 g-3">
-                    <div class="col-10 col-md-6 col-lg-6">
+                    <div class="col-12 col-md-6 col-lg-6">
                         <div class="card shadow-sm ">
                             <div class="card-header surface">
                                 <h5 class="mb-0 text">
@@ -266,7 +266,7 @@
 
 
                     <!--Dept wise average rating-->
-                    <div class="col-10 col-md-6 col-lg-6">
+                    <div class="col-12 col-md-6 col-lg-6">
                         <div class="card shadow-sm">
                             <div class="card-header surface">
                                 <h5 class="b-0 text">
@@ -313,12 +313,12 @@
 
     <!--Mobile -->
 
-    <div class="offcanvas offcanvas-start" id="mobileSidebar">
+    <div class="offcanvas offcanvas-start surface" id="mobileSidebar">
         <div class="offcanvas-header">
-            <h5 class="fw-bold">
+            <h5 class="fw-bold text">
                 Admin Panel
             </h5>
-            <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+            <button class="btn-close text text-white " data-bs-dismiss="offcanvas"></button>
         </div>
 
         <div class="offcanvas-body">
@@ -372,7 +372,7 @@
     <div class=" modal-dialog modal-dialog-center modal-md">
         <div class="modal-content rounded-4 shadow border-0">
 
-            <!--model header--> 
+            <!--model header-->     
             <div class="modal-header py-3">
                 <div class="d-flex align-items-center gap-3">
                     <div class="bg-primary bg-opacity-10 rounded-3 p-2">
@@ -443,28 +443,17 @@
 <!-- Welcome Toast -->
 <div class="toast-container position-fixed top-0 end-0 p-3">
 
-    <div id="welcomeToast"
-         class="toast"
-         role="alert"
-         aria-live="assertive"
-         aria-atomic="true">
-
+    <div id="welcomeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <i class="bi bi-shield-check text-success me-2 fs-5"></i>
-
             <strong class="me-auto">
                 Admin Panel
             </strong>
-
             <small>Just now</small>
-
             <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="toast">
-            </button>
+                type="button" class="btn-close" data-bs-dismiss="toast">
+            </button>   
         </div>
-
         <div class="toast-body surface text toastCount">
             👋 Welcome back, Admin! Have a productive day.
         </div>

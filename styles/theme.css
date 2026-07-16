@@ -110,11 +110,7 @@
     border-radius: 18px;
     overflow: hidden;
     background: var(--surface);
-
-    /* Keep Bootstrap border */
     border: var(--bs-card-border-width) solid var(--bs-card-border-color);
-
-    /* Bootstrap-like shadow */
     box-shadow: var(--bs-box-shadow-sm);
     padding: 20px;
     transition: all 0.3s ease;
