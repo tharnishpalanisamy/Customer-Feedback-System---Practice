@@ -74,7 +74,7 @@ ratingContainer.addEventListener('click' , function(event){
     if(event.target.classList.contains('rating-star')) {
         let rating = event.target.dataset.value 
         ratingValue = rating
-        console.log(rating);
+
         let stars = document.querySelectorAll('.rating-star') 
         stars.forEach(star => {
             if (Number(star.dataset.value) <= Number(rating)) {

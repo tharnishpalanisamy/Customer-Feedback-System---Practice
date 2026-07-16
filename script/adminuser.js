@@ -116,7 +116,6 @@ document.addEventListener('click' , async function(event){
         let userData = await fetch(`${USERSAPI}/${currentUser}`) 
         let user = await userData.json() 
 
-        console.log(user);
         
         name.value = user.name 
         email.value = user.email 
@@ -217,7 +216,7 @@ document.addEventListener('click' , async function(event){
                     setTimeout(() => {
                         Swal.fire({
                         title: "Logged Out!",
-                        text: "The user has been logged out.",
+                        text: "You have been logged out.",
                         icon: "success"
                     }, 1000);
                     });
@@ -226,7 +225,7 @@ document.addEventListener('click' , async function(event){
                         document.querySelectorAll('.logout-spinner').forEach(el => el.classList.add('d-none')  )
                         document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = false  )
                         window.location.href = './login.html'
-                    }, 3000);
+                    }, 2000);
                     
                 }
             });    

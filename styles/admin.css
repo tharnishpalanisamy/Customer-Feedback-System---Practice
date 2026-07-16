@@ -26,7 +26,7 @@
 }
 
 .logoutBtn:hover{
-    background: #f00 !important; 
+    background: rgb(214, 19, 19) !important; 
     color: white !important;
 }
 

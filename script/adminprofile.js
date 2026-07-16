@@ -12,9 +12,10 @@ toastr.options = {
 
 //getting the user 
 let user = JSON.parse(localStorage.getItem('user')) || ''
-//loading the details 
-console.log(user);
 let currentEmail = user.email 
+
+//loading the details 
+
 async function loadDetails(){
     try{
         let userData = await fetch(`${USERSAPI}/${user.id}`)
@@ -179,7 +180,7 @@ document.addEventListener('click' , function(event) {
                     setTimeout(() => {
                         Swal.fire({
                         title: "Logged Out!",
-                        text: "The user has been logged out.",
+                        text: "You have been logged out.",
                         icon: "success"
                     }, 1000);
                     });
@@ -188,7 +189,7 @@ document.addEventListener('click' , function(event) {
                         document.querySelectorAll('.logout-spinner').forEach(el => el.classList.add('d-none')  )
                         document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = false  )
                         window.location.href = './login.html'
-                    }, 3000);
+                    }, 2000);
                     
                 }
             });    

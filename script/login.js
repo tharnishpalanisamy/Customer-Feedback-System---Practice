@@ -37,6 +37,7 @@ loginBtn.addEventListener('click', async function () {
             email.classList.add("is-invalid");
             isValid = false;
         } else {
+            emailError.innerHTML = '';
             email.classList.add("is-valid");
         }
 
@@ -119,6 +120,7 @@ loginBtn.addEventListener('click', async function () {
     }
 
 });
+
 let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
 let emailError = document.querySelector('.emailError')
 email.addEventListener("input", function () {

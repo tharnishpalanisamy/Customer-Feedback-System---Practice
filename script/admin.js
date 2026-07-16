@@ -112,6 +112,7 @@ async function displayLatestFeedback(){
         toastr.error('Something went wrong')
     }
 }
+
 displayLatestFeedback()
 
 
@@ -129,12 +130,8 @@ document.addEventListener('click' , async function(event){
     if(event.target.classList.contains('viewBtn')) {
         try{
             currentFeedback = event.target.dataset.id ; 
-            console.log(currentFeedback);
-            
             let feedbackData = await fetch(`${FEEDBACKAPI}/${currentFeedback}`) 
-            let data = await feedbackData.json() 
-            console.log(data);
-            
+            let data = await feedbackData.json()             
             modalName.innerText = data.username 
             let stars = '' 
             let n = Number(data.rating) 
@@ -181,7 +178,7 @@ document.addEventListener('click' , async function(event){
                 setTimeout(() => {
                     Swal.fire({
                     title: "Logged Out!",
-                    text: "The user has been logged out.",
+                    text: "You have been logged out.",
                     icon: "success"
                 }, 1000);
                 });
@@ -190,7 +187,7 @@ document.addEventListener('click' , async function(event){
                     document.querySelectorAll('.logout-spinner').forEach(el => el.classList.add('d-none')  )
                     document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = false  )
                     window.location.href = './login.html'
-                }, 3000);
+                }, 2000);
                 
             }
         });    
@@ -274,7 +271,7 @@ async function calculateDistribution(){
         document.querySelector('.lawAndOrderCount').innerText = `(${lawCount}`
         document.querySelector('.administrationCount').innerText = `(${administrationCount})`
         document.querySelector('.overallCount').innerText = `(${n})`  
-        const max = Math.max(five, four, three, two, one);
+        let max = Math.max(five, four, three, two, one);
 
         five = (five/max) * 100 
         four = (four/max)  * 100 
@@ -344,7 +341,7 @@ if(localStorage.getItem('showToast')) {
 
     const toast = new bootstrap.Toast(toastElement, {
         autohide: true,
-        delay: 4000
+        delay: 5000
     });
 
     toast.show();
