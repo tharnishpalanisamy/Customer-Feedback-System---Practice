@@ -6,7 +6,7 @@
 
 .navbar{
     min-height: 65px; 
-    z-index: 1050;
+    z-index: 100;
 }
 
 .sidebar{

@@ -36,7 +36,7 @@
       "password": "Rahul@123",
       "role": "User",
       "createdOn": "2026-06-19T09:30:10.000Z",
-      "status": "In Active",
+      "status": "Active",
       "id": "u003",
       "phone": "9988776655"
     },
@@ -46,7 +46,7 @@
       "password": "Sneha@123",
       "role": "User",
       "createdOn": "2026-06-18T16:20:00.000Z",
-      "status": "In Active",
+      "status": "Active",
       "id": "u004",
       "phone": "9001122334"
     },
@@ -469,7 +469,7 @@
       "phone": "9791330225",
       "status": "Active",
       "id": "taMFo5qeTeY"
-    },
+      },
     {
       "name": "Tharnish",
       "email": "tharnish@gmail.com",
