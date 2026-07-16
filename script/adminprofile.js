@@ -14,7 +14,7 @@ toastr.options = {
 let user = JSON.parse(localStorage.getItem('user')) || ''
 //loading the details 
 console.log(user);
-
+let currentEmail = user.email 
 async function loadDetails(){
     try{
         let userData = await fetch(`${USERSAPI}/${user.id}`)
@@ -124,7 +124,7 @@ saveBtn.addEventListener('click' , async function(){
         let emailsData = await fetch(`${USERSAPI}?email=${newEmail}`) 
         let duplicateEmail = await emailsData.json()  
 
-        if(duplicateEmail.length >= 1) {
+        if(duplicateEmail.length >= 1 && duplicateEmail[0].email != currentEmail) {
             toastr.error("Email already exists") 
             return 
         }
@@ -141,7 +141,7 @@ saveBtn.addEventListener('click' , async function(){
             })
 
         })
-
+        toastr.success('profile updated successfully')
         loadDetails()
 
         //dismissing the modal 
