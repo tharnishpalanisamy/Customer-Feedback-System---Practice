@@ -14,7 +14,7 @@
       "name": "Arun Kumar",
       "email": "arunkumar@gmail.com",
       "password": "Arun@123",
-      "role": "User",
+      "role": "Admin",
       "createdOn": "2026-06-21T10:15:20.000Z",
       "status": "Active",
       "id": "u001",
@@ -421,7 +421,7 @@
       "status": "Active"
     },
     {
-      "name": "Tharnish p",
+      "name": "Tharnish",
       "email": "tharnishpalanisamy@gmail.com",
       "password": "Tharnish@2005",
       "role": "User",
