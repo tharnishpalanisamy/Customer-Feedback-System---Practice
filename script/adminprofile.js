@@ -40,38 +40,7 @@ async function loadDetails(){
 loadDetails()
 
 
-//loading the statistics 
 
-async function fetchStatistics(){
-    try{
-        let feedbackData = await fetch(`${FEEDBACKAPI}?userId=${user.id}`)
-        let feedbacks = await feedbackData.json() 
-        let rating = 0 
-        let pending = 0 
-        let responded = 0 
-
-        feedbacks.forEach(feedback => {
-            rating += Number(feedback.rating)
-            if(feedback.status == 'Pending') {
-                pending ++
-            }
-            else if(feedback.status == 'Responded') {
-                responded ++
-            }
-        })
-
-        document.querySelector('.totalFeedback').innerText = feedbacks.length 
-        document.querySelector('.averageRating').innerHTML = `${(rating /feedbacks.length).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>`
-        document.querySelector('.pending').innerText = pending 
-        document.querySelector('.responded').innerText = responded
-    }
-    catch(error){
-        console.log(error);
-    }
-
-}
-
-fetchStatistics()
 
 
 //loading values in the modal 

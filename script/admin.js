@@ -79,7 +79,6 @@ function createFeedback(feedbacks){
         for(let i = 1 ; i<= n ; i++){
             stars += '⭐'
         }
-        console.log(stars);
         
         
         body.innerHTML += `
@@ -174,7 +173,7 @@ document.addEventListener('click' , async function(event){
                 document.querySelectorAll('.logout-text').forEach(el => el.classList.add('d-none')  )
                 document.querySelectorAll('.logout-spinner').forEach(el => el.classList.remove('d-none')  )
                 document.querySelectorAll('.logoutBtn').forEach(el => el.disabled = true  )
-                
+
                 setTimeout(() => {
                     Swal.fire({
                     title: "Logged Out!",
@@ -254,8 +253,7 @@ async function calculateDistribution(){
             }
 
         })
-        console.log(n);
-        console.log(healthCount);
+
             
         //count  
         document.querySelector('.totalFeedbackCount').innerText = `(Total Feedback - ${n})`
