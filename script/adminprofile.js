@@ -126,7 +126,7 @@ saveBtn.addEventListener('click' , async function(){
 })
 
 
-
+//logout
 document.addEventListener('click' , function(event) {
     if(event.target.classList.contains('logoutBtn')) {
             Swal.fire({
